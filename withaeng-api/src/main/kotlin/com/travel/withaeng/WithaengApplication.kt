@@ -1,4 +1,4 @@
-package com.travel.withaeng.api
+package com.travel.withaeng
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

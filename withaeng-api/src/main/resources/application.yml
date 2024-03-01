@@ -4,3 +4,20 @@ spring:
   config:
     import:
       - classpath:/application-domain.yml
+
+oauth:
+  kakao:
+    client-id: ENC(9rtGKj4Ey4yl1R7w/7HcUFa9dA+jqfc6QcnpHOcDrrNEwAFHJqK+i9fQb6ruqx9wroekhd8mfs2I5WmXvfjc6JHNAFvVo/vRiM05xmb+0s0=)
+    url:
+      auth: https://kauth.kakao.com
+      api: https://kapi.kakao.com
+  naver:
+    secret: ENC(BxAAYz56rt+HgtKvqp1mjExXNDrijKiK78uLodlV2lz7KuMiIijMe8n6WT3VOa2K)
+    client-id: ENC(kFe88/G/uo8bsBwo5fxHvL7eOWHVhNkXRMIWKS3poUu/b0o2KbuEqYaZqVcNZ4pQZMqjtFI0CbnlHN829ySpwQ==)
+    url:
+      auth: https://nid.naver.com
+      api: https://openapi.naver.com
+
+witheang:
+  auth:
+    jwt-secret-key: ENC(i5HqamjyyaTwDSyiHXoAxJrP11XyQ8mArvAUI1RD15tteCbIEnzVVp+qcYB45xDkybBZmjY79HDp/Ci5YkkSyg==)
