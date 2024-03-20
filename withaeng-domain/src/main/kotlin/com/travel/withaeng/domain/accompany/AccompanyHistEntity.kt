@@ -4,9 +4,18 @@ import com.travel.withaeng.domain.BaseEntity
 import jakarta.persistence.*
 import java.time.LocalDate
 
-@Table(name = "accompany")
+@Table(name = "accompany_hist")
 @Entity
-class Accompany(
+class AccompanyHistEntity (
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "hist_id", nullable = false)
+    val histId: Long,
+
+    @Column(name = "accompany_id", nullable = false)
+    val accompanyId: Long,
+
     @Column(name = "user_id", nullable = false)
     val userId: Long,
 
@@ -16,6 +25,9 @@ class Accompany(
     @Lob
     @Column(name = "content", nullable = false)
     val content: String,
+
+    @Column(name = "accompany_status_cd", nullable = false)
+    val accompanyStatusCd : String,
 
     @Embedded
     val destination: Destination,
@@ -29,6 +41,7 @@ class Accompany(
     @Column(name = "banner_image_url")
     val bannerImageUrl: String?,
 
-    @Column(name = "view_counts", nullable = false)
-    val viewCounts: Long = 0L
+    @Column(name = "accompany_cnt", nullable = false)
+    val accompanyCnt: Long = 0L
+
 ) : BaseEntity()

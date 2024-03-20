@@ -3,10 +3,14 @@ spring:
     default: local
 
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ENC(lFITsL+l7aOSMUY3hRT3aR4X0GV+yqIJfYMyXaMajbZZJSW+Lv5MTrbP5Cwa8XAUxGpH7A9GxRNAZtrDhf6V4yXkD6gf3RUYWsPp77Ieguo=)
-    username: ENC(s1UggVxVWnWC0WqrTpmXaLw+QCpZmkuj2kvSQp+zt2vwKLbRH6WDAZKYUR75DqsR)
-    password: ENC(HT2z+x9LrfoHTmTTCYLkx7cO0ru9Gcbh+YGnP/0MWC1BpBwQtPfWue+zQx5RPQg8)
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test
+    username: user
+    password:
+  #driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: ENC(lFITsL+l7aOSMUY3hRT3aR4X0GV+yqIJfYMyXaMajbZZJSW+Lv5MTrbP5Cwa8XAUxGpH7A9GxRNAZtrDhf6V4yXkD6gf3RUYWsPp77Ieguo=)
+    #username: ENC(s1UggVxVWnWC0WqrTpmXaLw+QCpZmkuj2kvSQp+zt2vwKLbRH6WDAZKYUR75DqsR)
+    #password: ENC(HT2z+x9LrfoHTmTTCYLkx7cO0ru9Gcbh+YGnP/0MWC1BpBwQtPfWue+zQx5RPQg8)
 
   jpa:
     hibernate:
@@ -16,3 +20,7 @@ spring:
         show_sql: false
         format_sql: false
         use_sql_comments: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console

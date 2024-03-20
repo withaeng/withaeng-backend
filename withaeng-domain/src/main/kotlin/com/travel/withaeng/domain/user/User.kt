@@ -8,6 +8,12 @@ import java.time.LocalDate
 @Table(name = "users")
 @Entity
 class User(
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    val id: Long,
+
     @Column(name = "nickname", nullable = false)
     val nickname: String,
 
