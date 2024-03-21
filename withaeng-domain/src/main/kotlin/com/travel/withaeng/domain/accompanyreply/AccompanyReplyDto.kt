@@ -1,17 +1,9 @@
 package com.travel.withaeng.domain.accompanyreply
 
-import com.travel.withaeng.common.cd.AccompanyStatusCd
-import com.travel.withaeng.domain.accompany.AccompanyEntity
-import com.travel.withaeng.domain.accompany.Destination
-import jakarta.persistence.Column
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
 import jakarta.validation.constraints.NotBlank
 import lombok.Getter
 import lombok.Setter
 import org.jetbrains.annotations.NotNull
-import java.time.LocalDate
 
 class AccompanyReplyDto {
 

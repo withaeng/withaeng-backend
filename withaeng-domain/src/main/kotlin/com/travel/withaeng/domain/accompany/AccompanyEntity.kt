@@ -10,8 +10,8 @@ class AccompanyEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    val id: Long,
+    @Column(name = "accompany_id", nullable = false)
+    val accompanyId: Long,
 
     @Column(name = "user_id", nullable = false)
     val userId: Long,

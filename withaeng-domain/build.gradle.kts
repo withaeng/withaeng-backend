@@ -11,8 +11,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.projectlombok:lombok")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("com.querydsl:querydsl-jpa")
+
     runtimeOnly("com.h2database:h2")
     //runtimeOnly("com.mysql:mysql-connector-j:$mysqlVersion")
     // jasypt
     api("com.github.ulisesbocchio:jasypt-spring-boot-starter:$jasyptVersion")
 }
+
+

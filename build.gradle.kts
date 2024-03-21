@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
+    kotlin("kapt") version "1.9.10"
     kotlin("plugin.spring") apply false
     kotlin("plugin.jpa") apply false
     id("org.springframework.boot") apply false
@@ -27,6 +28,7 @@ val springMockkVersion: String by project.extra
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
+    //apply(plugin = "org.jetbrains.kotlin.kapt")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
     apply(plugin = "org.springframework.boot")
@@ -39,6 +41,7 @@ subprojects {
         // SpringMockk
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
+
 
         runtimeOnly("com.h2database:h2")
     }

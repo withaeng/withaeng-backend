@@ -29,9 +29,6 @@ class AccompanyHistEntity (
     @Column(name = "accompany_status_cd", nullable = false)
     val accompanyStatusCd : String,
 
-    @Embedded
-    val destination: Destination,
-
     @Column(name = "start_trip_date", nullable = false)
     val startTripDate: LocalDate,
 
