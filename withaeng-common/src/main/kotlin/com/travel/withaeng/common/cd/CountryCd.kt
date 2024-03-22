@@ -108,4 +108,8 @@ enum class CountryCd (
     SWEDEN(ContinentCd.EUROPE.continentCd,"SWEDEN","스웨덴"),
     FRANCE(ContinentCd.EUROPE.continentCd,"FRANCE","프랑스"),
 
+    AUSTRALIA(ContinentCd.OCEANIA.continentCd,"AUSTRALIA","호주"),
+    PALAU(ContinentCd.OCEANIA.continentCd,"PALAU","팔라우"),
+    PAPUA_NEW_GUINEA(ContinentCd.OCEANIA.continentCd,"PAPUA_NEW_GUINEA","파푸아뉴기니"),
+
 }

@@ -30,6 +30,11 @@ class AccompanyController(private val accompanyService: AccompanyService) {
         return ResponseEntity.status(HttpStatus.OK).body(accompanyService.getOne(accompanyId))
     }
 
+    @PutMapping("/{accompanyId}/incr/viewCnt")
+    fun incrViewCnt(@PathVariable("accompanyId") accompanyId : Long) : ResponseEntity<Long> {
+        return ResponseEntity.status(HttpStatus.OK).body(accompanyService.incrViewCnt(accompanyId))
+    }
+
     /*@GetMapping("/getList")
     fun getList(@RequestBody param : SearchAccompanyDTO) : ResponseEntity<List<ReadAccompanyDTO>> {
         return ResponseEntity.status(HttpStatus.OK).body(accompanyService.getList(param))

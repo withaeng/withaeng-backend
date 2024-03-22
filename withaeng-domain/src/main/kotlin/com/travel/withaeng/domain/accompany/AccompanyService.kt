@@ -39,4 +39,12 @@ class AccompanyService(
         return ReadAccompanyDTO.toDto(accompanyEntity, accompanyDestinationEntity)
     }
 
+    @Transactional
+    fun incrViewCnt(param : Long) : Long{
+        val accompanyEntity = accompanyRepository.findByAccompanyId(param)
+        accompanyEntity.let {
+            it.viewCnt++
+        }
+        return param
+    }
 }

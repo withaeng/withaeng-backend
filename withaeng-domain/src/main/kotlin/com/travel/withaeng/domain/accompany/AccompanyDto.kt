@@ -94,7 +94,8 @@ data class ReadAccompanyDTO(
     val startTripDate: LocalDate,
     val endTripDate: LocalDate,
     val bannerImageUrl: String? = null,
-    val accompanyCnt : Long
+    val accompanyCnt : Long,
+    val viewCnt : Long
 
 ){
     companion object {
@@ -111,7 +112,8 @@ data class ReadAccompanyDTO(
                 startTripDate = accompanyEntity.startTripDate,
                 endTripDate = accompanyEntity.endTripDate,
                 bannerImageUrl = accompanyEntity.bannerImageUrl,
-                accompanyCnt = accompanyEntity.accompanyCnt
+                accompanyCnt = accompanyEntity.accompanyCnt,
+                viewCnt = accompanyEntity.viewCnt
             )
         }
     }

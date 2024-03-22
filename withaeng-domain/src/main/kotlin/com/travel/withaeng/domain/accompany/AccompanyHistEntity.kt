@@ -20,25 +20,28 @@ class AccompanyHistEntity (
     val userId: Long,
 
     @Column(name = "title", nullable = false)
-    val title: String,
+    var title: String,
 
     @Lob
     @Column(name = "content", nullable = false)
-    val content: String,
+    var content: String,
 
     @Column(name = "accompany_status_cd", nullable = false)
-    val accompanyStatusCd : String,
+    var accompanyStatusCd : String,
 
     @Column(name = "start_trip_date", nullable = false)
-    val startTripDate: LocalDate,
+    var startTripDate: LocalDate,
 
     @Column(name = "end_trip_date", nullable = false)
-    val endTripDate: LocalDate,
+    var endTripDate: LocalDate,
 
     @Column(name = "banner_image_url")
-    val bannerImageUrl: String?,
+    var bannerImageUrl: String?,
 
     @Column(name = "accompany_cnt", nullable = false)
-    val accompanyCnt: Long = 0L
+    var accompanyCnt: Long = 0L,
+
+    @Column(name = "view_cnt", nullable = false)
+    var viewCnt: Long = 0L
 
 ) : BaseEntity()
