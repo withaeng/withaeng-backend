@@ -2,36 +2,29 @@ package com.travel.withaeng.domain.user
 
 import com.travel.withaeng.converter.UserRoleConverter
 import com.travel.withaeng.domain.BaseEntity
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Convert
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
 import java.time.LocalDate
 
 @Table(name = "users")
 @Entity
 class User(
+    @Column(name = "email", nullable = false)
+    val email: String,
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    val id: Long,
+    @Column(name = "password", nullable = false)
+    val password: String,
 
     @Column(name = "nickname", nullable = false)
     val nickname: String,
 
-    @Column(name = "password", nullable = true)
-    val password: String? = null,
+    @Column(name = "birth", nullable = true)
+    val birth: LocalDate? = null,
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "social_type", nullable = true)
-    val socialType: SocialType? = null,
-
-    @Column(name = "provider_unique_key", nullable = true)
-    val providerUniqueKey: String? = null,
-
-    @Column(name = "birth", nullable = false)
-    val birth: LocalDate,
-
-    @Column(name = "is_male", nullable = false)
-    val isMale: Boolean,
+    @Column(name = "is_male", nullable = true)
+    val isMale: Boolean? = null,
 
     @Column(name = "profile_image_url")
     val profileImageUrl: String? = null,
@@ -42,4 +35,29 @@ class User(
     @Convert(converter = UserRoleConverter::class)
     @Column(name = "roles")
     val roles: Set<UserRole>,
-) : BaseEntity()
+) : BaseEntity() {
+
+    companion object {
+
+        fun create(
+            email: String,
+            password: String,
+            nickname: String,
+            birth: LocalDate? = null,
+            isMale: Boolean? = null,
+            profileImageUrl: String? = null,
+            bio: String? = null,
+        ): User {
+            return User(
+                email = email,
+                password = password,
+                nickname = nickname,
+                profileImageUrl = profileImageUrl,
+                birth = birth,
+                isMale = isMale,
+                bio = bio,
+                roles = setOf(UserRole.USER)
+            )
+        }
+    }
+}
