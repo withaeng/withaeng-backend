@@ -1,6 +1,6 @@
 package com.travel.withaeng.domain.accompanylike
 
-import com.travel.withaeng.domain.BaseEntity
+import com.travel.withaeng.domain.AccompanyBaseEntity
 import jakarta.persistence.*
 
 @Table(name = "accompany_like")
@@ -12,10 +12,10 @@ class AccompanyLikeEntity(
     @Column(name = "like_id", nullable = false)
     val likeId: Long,
 
+    @Column(name = "accompany_id", nullable = false)
+    val accompanyId: Long,
+
     @Column(name = "user_id", nullable = false)
     val userId: Long,
 
-    @Column(name = "accompany_id", nullable = false)
-    val accompanyId: Long
-
-) : BaseEntity()
+) : AccompanyBaseEntity()

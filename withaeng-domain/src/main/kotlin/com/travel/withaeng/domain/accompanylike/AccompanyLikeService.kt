@@ -1,5 +1,6 @@
 package com.travel.withaeng.domain.accompanylike
 
+import com.travel.withaeng.domain.accompany.AccompanyDetailRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -9,7 +10,8 @@ import java.time.LocalDateTime
 class AccompanyLikeService(
 
     private val accompanyLikeRepository: AccompanyLikeRepository,
-    private val accompanyLikeHistRepository : AccompanyLikeHistRepository
+    private val accompanyLikeHistRepository : AccompanyLikeHistRepository,
+    private val accompanyDetailRepository: AccompanyDetailRepository
 
 ) {
 
@@ -21,6 +23,11 @@ class AccompanyLikeService(
 
         val accompanyLikeHistEntity = param.toHistEntity(accompanyLikeEntity)
         accompanyLikeHistRepository.save(accompanyLikeHistEntity)
+
+        val accompanyDetailEntity = accompanyDetailRepository.findByAccompanyId(param.accompanyId)
+        accompanyDetailEntity.let {
+            it.likeCnt++
+        }
 
         return accompanyLikeEntity.likeId
     }

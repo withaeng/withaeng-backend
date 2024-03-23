@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface AccompanyRepository : JpaRepository<AccompanyEntity, Long> {
 
-    fun findByAccompanyId(accompanyId : Long) : AccompanyEntity
+    fun findByAccompanyId(accompanyId : Long) : AccompanyEntity?
 
 }

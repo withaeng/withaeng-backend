@@ -1,5 +1,7 @@
 package com.travel.withaeng.common
 
+import com.travel.withaeng.common.exception.InvalidAccessException
+import com.travel.withaeng.common.exception.NotExistsException
 import com.travel.withaeng.common.exception.WithaengException
 import com.travel.withaeng.common.exception.WithaengExceptionType
 import org.slf4j.Logger
@@ -66,6 +68,18 @@ class ControllerExceptionAdvice {
         logger.error("MethodArgumentNotValidException handler", e)
         val errorMessage = e.allErrors.joinToString(" ,")
         return errorResponse(WithaengExceptionType.ARGUMENT_NOT_VALID, errorMessage)
+    }
+
+    @ExceptionHandler(NotExistsException::class)
+    protected fun notExistsException(e: NotExistsException) : ResponseEntity<ApiResponse<Any>> {
+        logger.error("notExistsException", e)
+        return errorResponse(WithaengExceptionType.NOT_EXIST, e.message)
+    }
+
+    @ExceptionHandler(InvalidAccessException::class)
+    protected fun invalidAccessException(e: InvalidAccessException) : ResponseEntity<ApiResponse<Any>> {
+        logger.error("invalidAccessException", e)
+        return errorResponse(WithaengExceptionType.INVALID_ACCESS, e.message)
     }
 
     private fun WithaengException.toApiErrorResponse() = ApiErrorResponse(

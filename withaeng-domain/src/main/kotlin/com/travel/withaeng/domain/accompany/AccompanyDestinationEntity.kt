@@ -1,6 +1,6 @@
 package com.travel.withaeng.domain.accompany
 
-import com.travel.withaeng.domain.BaseEntity
+import com.travel.withaeng.domain.AccompanyBaseEntity
 import jakarta.persistence.*
 
 @Table(name = "accompany_destinaion")
@@ -15,13 +15,13 @@ class AccompanyDestinationEntity(
     @Column(name = "accompany_id", nullable = false)
     val accompanyId: Long,
 
-    @Column(name = "continent", nullable = false)
-    val continent: String,
+    @Column(name = "continent", nullable = false, updatable = true)
+    var continent: String,
 
-    @Column(name = "country", nullable = true)
-    val country : String?,
+    @Column(name = "country", nullable = true, updatable = true)
+    var country : String?,
 
-    @Column(name = "city", nullable = true)
-    val city : String?,
+    @Column(name = "city", nullable = true, updatable = true)
+    var city : String?,
 
-) : BaseEntity()
+) : AccompanyBaseEntity()

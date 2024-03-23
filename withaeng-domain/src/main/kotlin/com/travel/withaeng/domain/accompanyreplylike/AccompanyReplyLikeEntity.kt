@@ -1,6 +1,6 @@
 package com.travel.withaeng.domain.accompanyreplylike
 
-import com.travel.withaeng.domain.BaseEntity
+import com.travel.withaeng.domain.AccompanyBaseEntity
 import jakarta.persistence.*
 
 @Table(name = "accompany_reply_like")
@@ -18,4 +18,4 @@ class AccompanyReplyLikeEntity(
     @Column(name = "user_id", nullable = false)
     val userId: Long
 
-) : BaseEntity()
+) : AccompanyBaseEntity()

@@ -1,6 +1,6 @@
 package com.travel.withaeng.domain.accompany
 
-import com.travel.withaeng.domain.BaseEntity
+import com.travel.withaeng.domain.AccompanyBaseEntity
 import jakarta.persistence.*
 import java.time.LocalDate
 
@@ -44,4 +44,4 @@ class AccompanyHistEntity (
     @Column(name = "view_cnt", nullable = false)
     var viewCnt: Long = 0L
 
-) : BaseEntity()
+) : AccompanyBaseEntity()

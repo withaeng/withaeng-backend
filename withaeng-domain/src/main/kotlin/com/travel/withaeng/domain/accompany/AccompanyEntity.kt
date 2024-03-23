@@ -1,6 +1,6 @@
 package com.travel.withaeng.domain.accompany
 
-import com.travel.withaeng.domain.BaseEntity
+import com.travel.withaeng.domain.AccompanyBaseEntity
 import jakarta.persistence.*
 import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDate
@@ -40,7 +40,4 @@ class AccompanyEntity(
     @Column(name = "accompany_cnt", nullable = false)
     var accompanyCnt: Long = 0L,
 
-    @Column(name = "view_cnt", nullable = false)
-    var viewCnt: Long = 0L
-
-) : BaseEntity()
+) : AccompanyBaseEntity()

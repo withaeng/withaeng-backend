@@ -26,9 +26,9 @@ class CreateAccompanyDTO(
     @NotBlank(message = "대륙은 필수 값 입니다.")
     val continent: String,
 
-    private val country : String? = null,
+    val country : String? = null,
 
-    private val city : String? = null,
+    val city : String? = null,
 
     @NotBlank
     val startTripDate: LocalDate,
@@ -83,6 +83,66 @@ class CreateAccompanyDTO(
             )
     }
 
+    fun toDetailEntity(accompanyId : Long) : AccompanyDetailEntity {
+        return AccompanyDetailEntity(
+            accompanyId,
+            0,
+            0
+        )
+    }
+
+    fun toTagEntity(accompanyId : Long) : List<AccompanyTagEntity>? {
+
+        if(tags == null){
+            return null
+        }
+
+        val tagList = mutableListOf<AccompanyTagEntity>()
+        for(tagNm in tags){
+            tagList.add(AccompanyTagEntity(AccompanyTagPk(accompanyId, tagNm)))
+        }
+
+        return tagList
+    }
+}
+
+@Setter
+@Getter
+class ModifyAccompanyDTO(
+
+    @NotNull
+    val accompanyId : Long,
+
+    @NotNull
+    val userId: Long,
+
+    @NotBlank(message = "제목은 필수 값 입니다.")
+    val title: String,
+
+    @NotBlank(message = "내용은 필수 값 입니다.")
+    val content: String,
+
+    @NotBlank(message = "대륙은 필수 값 입니다.")
+    val continent: String,
+
+    val country : String? = null,
+
+    val city : String? = null,
+
+    @NotBlank
+    val startTripDate: LocalDate,
+
+    @NotBlank
+    val endTripDate: LocalDate,
+
+    val bannerImageUrl: String? = null,
+
+    @NotNull
+    val accompanyCnt : Long,
+
+    val tags : List<String>?
+
+){
     fun toTagEntity(accompanyId : Long) : List<AccompanyTagEntity>? {
 
         if(tags == null){
@@ -111,12 +171,14 @@ data class ReadAccompanyDTO(
     val endTripDate: LocalDate,
     val bannerImageUrl: String? = null,
     val accompanyCnt : Long,
-    val viewCnt : Long
+    val viewCnt : Long,
+    val likeCnt : Long,
+    val tags : List<String>? = null
 
 ){
     companion object {
         @JvmStatic
-        fun toDto(accompanyEntity : AccompanyEntity, accompanyDestinationEntity: AccompanyDestinationEntity) : ReadAccompanyDTO {
+        fun toDto(accompanyEntity : AccompanyEntity, accompanyDestinationEntity: AccompanyDestinationEntity, accompanyDetailEntity: AccompanyDetailEntity, tagList : List<String>?) : ReadAccompanyDTO {
             return ReadAccompanyDTO(
                 accompanyId = accompanyEntity.accompanyId,
                 userId = accompanyEntity.userId,
@@ -129,7 +191,9 @@ data class ReadAccompanyDTO(
                 endTripDate = accompanyEntity.endTripDate,
                 bannerImageUrl = accompanyEntity.bannerImageUrl,
                 accompanyCnt = accompanyEntity.accompanyCnt,
-                viewCnt = accompanyEntity.viewCnt
+                viewCnt = accompanyDetailEntity.viewCnt,
+                likeCnt = accompanyDetailEntity.likeCnt,
+                tags = tagList
             )
         }
     }

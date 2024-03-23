@@ -1,6 +1,6 @@
 package com.travel.withaeng.domain.accompanyreply
 
-import com.travel.withaeng.domain.BaseEntity
+import com.travel.withaeng.domain.AccompanyBaseEntity
 import jakarta.persistence.*
 
 @Table(name = "accompany_reply")
@@ -27,4 +27,4 @@ class AccompanyReplyEntity(
     @Column(name = "content", nullable = false)
     val content: String,
 
-) : BaseEntity()
+) : AccompanyBaseEntity()
