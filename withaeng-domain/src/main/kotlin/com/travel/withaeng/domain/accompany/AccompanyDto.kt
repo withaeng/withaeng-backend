@@ -39,7 +39,9 @@ class CreateAccompanyDTO(
     val bannerImageUrl: String? = null,
 
     @NotNull
-    val accompanyCnt : Long
+    val accompanyCnt : Long,
+
+    val tags : List<String>?
 
 ){
     fun toEntity(): AccompanyEntity {
@@ -79,6 +81,20 @@ class CreateAccompanyDTO(
                 this.country,
                 this.city
             )
+    }
+
+    fun toTagEntity(accompanyId : Long) : List<AccompanyTagEntity>? {
+
+        if(tags == null){
+            return null
+        }
+
+        val tagList = mutableListOf<AccompanyTagEntity>()
+        for(tagNm in tags){
+            tagList.add(AccompanyTagEntity(AccompanyTagPk(accompanyId, tagNm)))
+        }
+
+        return tagList
     }
 }
 

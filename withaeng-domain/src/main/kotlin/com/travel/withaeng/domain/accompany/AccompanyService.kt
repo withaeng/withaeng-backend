@@ -9,7 +9,8 @@ class AccompanyService(
 
     private val accompanyRepository: AccompanyRepository,
     private val accompanyHistRepository : AccompanyHistRepository,
-    private val accompanyDestinationRepository : AccompanyDestinationRepository
+    private val accompanyDestinationRepository : AccompanyDestinationRepository,
+    private val accompanyTagRepository: AccompanyTagRepository
 
 ) {
 
@@ -20,9 +21,14 @@ class AccompanyService(
 
         val accompanyHistEntity = param.toHistEntity(accompanyEntity)
         val accompanyDestinationEntity = param.toDestinationEntity(accompanyEntity.accompanyId)
+        val accompanyTagEntityList = param.toTagEntity(accompanyEntity.accompanyId)
 
         accompanyHistRepository.save(accompanyHistEntity)
         accompanyDestinationRepository.save(accompanyDestinationEntity)
+
+        if(accompanyTagEntityList != null){
+            accompanyTagRepository.saveAll(accompanyTagEntityList)
+        }
 
         return accompanyEntity.accompanyId;
     }

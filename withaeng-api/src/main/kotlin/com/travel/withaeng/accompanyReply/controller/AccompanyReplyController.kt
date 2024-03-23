@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/accompany{accompany}/reply")
+@RequestMapping("/api/v1/accompany{accompanyId}/reply")
 class AccompanyReplyController(private val accompanyReplyService: AccompanyReplyService){
 
     /*@PostMapping("")
