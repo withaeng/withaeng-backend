@@ -8,14 +8,14 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@EnableConfigurationProperties(AuthProperty::class)
+//@EnableConfigurationProperties(AuthProperty::class)
 class AuthConfig {
 
     @Bean
-    fun jwtProvider(mapper: ObjectMapper, authProperty: AuthProperty): JwtProvider {
-        return JwtProvider(mapper, authProperty.jwtSecretKey)
+    fun jwtProvider(mapper: ObjectMapper): JwtProvider {
+        return JwtProvider(mapper, "ENC(i5HqamjyyaTwDSyiHXoAxJrP11XyQ8mArvAUI1RD15tteCbIEnzVVp+qcYB45xDkybBZmjY79HDp/Ci5YkkSyg==)")
     }
 }
 
-@ConfigurationProperties(prefix = "witheang.auth")
-data class AuthProperty(val jwtSecretKey: String)
+//@ConfigurationProperties(prefix = "witheang.auth")
+//data class AuthProperty(val jwtSecretKey: String)

@@ -1,5 +1,6 @@
 package com.travel.withaeng.domain.accompany
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.travel.withaeng.common.cd.AccompanyStatusCd
 import com.travel.withaeng.common.cd.ExecCd
 import jakarta.validation.constraints.NotBlank
@@ -15,16 +16,19 @@ class AccompanyDto ()
 @Getter
 class CreateAccompanyDTO(
 
-    @NotNull
+    @field:NotNull
+    @JsonProperty("userId")
     val userId: Long,
 
-    @NotBlank(message = "제목은 필수 값 입니다.")
+    @field:NotBlank(message = "제목은 필수 값 입니다.")
+    @JsonProperty("title")
     val title: String,
 
-    @NotBlank(message = "내용은 필수 값 입니다.")
+    @field:NotBlank(message = "내용은 필수 값 입니다.")
+    @JsonProperty("content")
     val content: String,
 
-    @NotBlank(message = "대륙은 필수 값 입니다.")
+    @field:NotBlank(message = "대륙은 필수 값 입니다.")
     val continent: String,
 
     val country : String? = null,
@@ -39,7 +43,7 @@ class CreateAccompanyDTO(
 
     val bannerImageUrl: String? = null,
 
-    @NotNull
+    @field:NotNull
     val accompanyCnt : Long,
 
     val tags : List<String>?

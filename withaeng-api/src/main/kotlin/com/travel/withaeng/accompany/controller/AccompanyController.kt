@@ -2,8 +2,10 @@ package com.travel.withaeng.accompany.controller
 
 import com.travel.withaeng.common.ApiResponse
 import com.travel.withaeng.domain.accompany.*
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -11,13 +13,13 @@ import org.springframework.web.bind.annotation.*
 class AccompanyController(private val accompanyService: AccompanyService) {
 
     @PostMapping("")
-    fun create(@RequestBody param : CreateAccompanyDTO) : ResponseEntity<ApiResponse<Any>> {
+    fun create(@RequestBody @Valid param : CreateAccompanyDTO) : ResponseEntity<ApiResponse<Any>> {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse(true, accompanyService.createAccompany(param), null))
     }
 
-    @PutMapping("")
-    fun modify(@RequestBody param : ModifyAccompanyDTO) : ResponseEntity<ApiResponse<Any>> {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse(true, accompanyService.modifyAccompany(param), null))
+    @PutMapping("/{accompanyId}")
+    fun modify(@RequestBody @Valid param : ModifyAccompanyDTO) : ResponseEntity<ApiResponse<Any>> {
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse(true, accompanyService.modifyAccompany(param), null))
     }
 
     @GetMapping("/{accompanyId}")
