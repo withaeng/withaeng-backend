@@ -1,6 +1,7 @@
 package com.travel.withaeng.domain.accompanylike
 
 import com.travel.withaeng.common.cd.AccompanyStatusCd
+import com.travel.withaeng.common.cd.ExecCd
 import com.travel.withaeng.domain.accompany.AccompanyDestinationEntity
 import com.travel.withaeng.domain.accompany.AccompanyEntity
 import com.travel.withaeng.domain.accompany.AccompanyHistEntity
@@ -37,7 +38,8 @@ class CreateAccompanyLikeDTO(
             0,
             entity.likeId,
             entity.userId,
-            entity.accompanyId
+            entity.accompanyId,
+            ExecCd.CREATE.execCd
         )
     }
 
@@ -70,7 +72,8 @@ class DeleteAccompanyLikeDTO(
             0,
             entity.likeId,
             entity.userId,
-            entity.accompanyId
+            entity.accompanyId,
+            ExecCd.DELETE.execCd
         )
     }
 

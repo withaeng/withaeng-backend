@@ -16,7 +16,7 @@ class AccompanyLikeService(
 ) {
 
     @Transactional
-    fun createAccompanyLike(param : CreateAccompanyLikeDTO) : Long {
+    fun createAccompanyLike(param : CreateAccompanyLikeDTO) : CreateAccompanyLikeDTO {
 
         val accompanyLikeEntity = param.toEntity()
         accompanyLikeRepository.save(accompanyLikeEntity)
@@ -29,12 +29,12 @@ class AccompanyLikeService(
             it.likeCnt++
         }
 
-        return accompanyLikeEntity.likeId
+        return param
     }
 
     //TODO delete 성능이 안나올 경우 boolean 형으로 좋아요 제어
     @Transactional
-    fun deleteAccompanyLike(param : DeleteAccompanyLikeDTO){
+    fun deleteAccompanyLike(param : DeleteAccompanyLikeDTO) : DeleteAccompanyLikeDTO{
 
         val accompanyLikeEntity = param.toEntity()
         accompanyLikeRepository.delete(accompanyLikeEntity)
@@ -43,6 +43,7 @@ class AccompanyLikeService(
         accompanyLikeHistEntity.deletedAt = LocalDateTime.now()
         accompanyLikeHistRepository.save(accompanyLikeHistEntity)
 
+        return param
     }
 
 }

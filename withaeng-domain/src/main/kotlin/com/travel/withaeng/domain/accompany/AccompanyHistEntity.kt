@@ -41,7 +41,7 @@ class AccompanyHistEntity (
     @Column(name = "accompany_cnt", nullable = false)
     var accompanyCnt: Long = 0L,
 
-    @Column(name = "view_cnt", nullable = false)
-    var viewCnt: Long = 0L
+    @Column(name = "exec_cd", nullable = false)
+    val execCd : String
 
 ) : AccompanyBaseEntity()

@@ -83,7 +83,7 @@ class AccompanyService(
         if(accompanyEntity != null){
             val accompanyDestinationEntity = accompanyDestinationRepository.findByAccompanyId(param)
             val accompanyDetailEntity = accompanyDetailRepository.findByAccompanyId(param)
-            val tagList:List<String>? = accompanyTagRepository.findByAccompanyId(param)?.map{AccompanyTagEntity::accompanyTagPk.name}
+            val tagList:List<String>? = accompanyTagRepository.findByAccompanyId(param)?.map(AccompanyTagEntity::tagNm)
             return ReadAccompanyDTO.toDto(accompanyEntity, accompanyDestinationEntity, accompanyDetailEntity, tagList)
         }
 
@@ -91,12 +91,13 @@ class AccompanyService(
     }
 
     fun getList(param : SearchAccompanyDTO) : List<ReadAccompanyDTO> {
-        val accompanyEntity = accompanyRepository.findByAccompanyId(param)
+        /*val accompanyList = accompanyRepository.findAll(param)
         if(accompanyEntity != null){
             val accompanyDestinationEntity = accompanyDestinationRepository.findByAccompanyId(param)
             val accompanyDetailEntity = accompanyDetailRepository.findByAccompanyId(param)
             return ReadAccompanyDTO.toDto(accompanyEntity, accompanyDestinationEntity)
-        }
+        }*/
+        return ArrayList()
     }
 
     @Transactional

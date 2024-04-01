@@ -1,5 +1,6 @@
 package com.travel.withaeng.accompanyLike.controller
 
+import com.travel.withaeng.common.ApiResponse
 import com.travel.withaeng.domain.accompany.CreateAccompanyDTO
 import com.travel.withaeng.domain.accompanylike.AccompanyLikeService
 import com.travel.withaeng.domain.accompanylike.CreateAccompanyLikeDTO
@@ -13,13 +14,14 @@ import org.springframework.web.bind.annotation.*
 class AccompanyLikeController(private val accompanyLikeService: AccompanyLikeService) {
 
     @PostMapping("")
-    fun create(@RequestBody param : CreateAccompanyLikeDTO) : ResponseEntity<Long> {
-        return ResponseEntity.status(HttpStatus.CREATED).body(accompanyLikeService.createAccompanyLike(param))
+    fun create(@RequestBody param : CreateAccompanyLikeDTO) : ResponseEntity<ApiResponse<Any>> {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                ApiResponse(true, accompanyLikeService.createAccompanyLike(param), null))
     }
 
     @DeleteMapping("")
     fun delete(@RequestBody param : DeleteAccompanyLikeDTO) : ResponseEntity<Any>{
-        return ResponseEntity.status(HttpStatus.OK).body("")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse(true,accompanyLikeService.deleteAccompanyLike(param), null))
     }
 
 }

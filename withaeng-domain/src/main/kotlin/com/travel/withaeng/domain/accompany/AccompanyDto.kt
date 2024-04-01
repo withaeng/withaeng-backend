@@ -1,6 +1,7 @@
 package com.travel.withaeng.domain.accompany
 
 import com.travel.withaeng.common.cd.AccompanyStatusCd
+import com.travel.withaeng.common.cd.ExecCd
 import jakarta.validation.constraints.NotBlank
 import lombok.Getter
 import lombok.NoArgsConstructor
@@ -69,7 +70,8 @@ class CreateAccompanyDTO(
             entity.startTripDate,
             entity.endTripDate,
             entity.bannerImageUrl,
-            entity.accompanyCnt
+            entity.accompanyCnt,
+            ExecCd.CREATE.execCd
         )
     }
 
@@ -99,7 +101,7 @@ class CreateAccompanyDTO(
 
         val tagList = mutableListOf<AccompanyTagEntity>()
         for(tagNm in tags){
-            tagList.add(AccompanyTagEntity(AccompanyTagPk(accompanyId, tagNm)))
+            tagList.add(AccompanyTagEntity(accompanyId, tagNm))
         }
 
         return tagList
@@ -151,7 +153,7 @@ class ModifyAccompanyDTO(
 
         val tagList = mutableListOf<AccompanyTagEntity>()
         for(tagNm in tags){
-            tagList.add(AccompanyTagEntity(AccompanyTagPk(accompanyId, tagNm)))
+            tagList.add(AccompanyTagEntity(accompanyId, tagNm))
         }
 
         return tagList
@@ -203,32 +205,12 @@ data class ReadAccompanyDTO(
 @Getter
 class SearchAccompanyDTO(
 
-    @NotNull
-    val userId: Long,
+    val viewCntOrder: Boolean,//조회수 높은 순서
 
-    @NotBlank(message = "제목은 필수 값 입니다.")
-    val title: String,
+    val likeCntOrder: Boolean,//좋아요 높은 순서
 
-    @NotBlank(message = "내용은 필수 값 입니다.")
-    val content: String,
+    val startTripDate: LocalDate,//동행 모집 시작일시
 
-    @NotBlank(message = "대륙은 필수 값 입니다.")
-    val continent: String,
+    val endTripDate: LocalDate,//동행 모집 마감일시
 
-    private val country : String? = null,
-
-    private val city : String? = null,
-
-    @NotBlank
-    val startTripDate: LocalDate,
-
-    @NotBlank
-    val endTripDate: LocalDate,
-
-    val bannerImageUrl: String? = null,
-
-    @NotNull
-    val accompanyCnt : Long
-){
-
-}
+)

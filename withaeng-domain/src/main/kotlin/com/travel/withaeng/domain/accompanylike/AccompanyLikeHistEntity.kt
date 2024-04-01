@@ -19,6 +19,9 @@ class AccompanyLikeHistEntity (
     val userId: Long,
 
     @Column(name = "accompany_id", nullable = false)
-    val accompanyId: Long
+    val accompanyId: Long,
+
+    @Column(name = "exec_cd", nullable = false)
+    val execCd : String
 
 ) : AccompanyBaseEntity()

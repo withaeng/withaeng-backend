@@ -2,17 +2,18 @@ package com.travel.withaeng.domain.accompanyreply
 
 import com.travel.withaeng.domain.AccompanyBaseEntity
 import jakarta.persistence.*
-import org.hibernate.annotations.DynamicUpdate
 
-@DynamicUpdate
-@Table(name = "accompany_reply")
+@Table(name = "accompany_reply_hist")
 @Entity
-class AccompanyReplyEntity(
+class AccompanyReplyHistEntity (
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reply_id", nullable = false)
-    val replyId: Long,
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name = "hist_id", nullable = false)
+   val histId: Long,
+
+   @Column(name = "reply_id", nullable = false)
+   val replyId: Long,
 
     @Column(name = "accompany_id", nullable = false)
     val accompanyId : Long,
@@ -27,6 +28,9 @@ class AccompanyReplyEntity(
     val userId: Long,
 
     @Column(name = "content", nullable = false)
-    var content: String,
+    val content: String,
+
+   @Column(name = "exec_cd", nullable = false)
+   val execCd: String,
 
 ) : AccompanyBaseEntity()
