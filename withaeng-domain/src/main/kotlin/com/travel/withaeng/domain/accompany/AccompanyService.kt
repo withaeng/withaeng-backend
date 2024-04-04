@@ -11,6 +11,7 @@ class AccompanyService(
 
     private val accompanyRepository: AccompanyRepository,
     private val accompanyHistRepository : AccompanyHistRepository,
+    private val accompanyRepositoryCustom: AccompanyRepositoryCustom,
     private val accompanyDestinationRepository : AccompanyDestinationRepository,
     private val accompanyDetailRepository : AccompanyDetailRepository,
     private val accompanyTagRepository: AccompanyTagRepository
@@ -91,13 +92,13 @@ class AccompanyService(
     }
 
     fun getList(param : SearchAccompanyDTO) : List<ReadAccompanyDTO> {
-        /*val accompanyList = accompanyRepository.findAll(param)
-        if(accompanyEntity != null){
-            val accompanyDestinationEntity = accompanyDestinationRepository.findByAccompanyId(param)
-            val accompanyDetailEntity = accompanyDetailRepository.findByAccompanyId(param)
-            return ReadAccompanyDTO.toDto(accompanyEntity, accompanyDestinationEntity)
-        }*/
-        return ArrayList()
+
+        val accompanyList = accompanyRepositoryCustom.getAccompanyList(param)
+        if(accompanyList != null){
+            return accompanyList
+        }
+
+        throw NotExistsException("존재하지 않는 동행 게시글 조회 요청 입니다.")
     }
 
     @Transactional
