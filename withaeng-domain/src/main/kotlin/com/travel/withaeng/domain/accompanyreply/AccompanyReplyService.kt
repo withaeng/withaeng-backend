@@ -88,7 +88,9 @@ class AccompanyReplyService (
         if(accompanyReplyList != null){
 
             val resultList: List<ReadAccompanyReplyDTO> = accompanyReplyList.map {
-                accompanyReply -> ReadAccompanyReplyDTO.toDto(accompanyReply)
+                accompanyReply ->
+
+                ReadAccompanyReplyDTO.toDto(accompanyReply)
             }
 
             return resultList

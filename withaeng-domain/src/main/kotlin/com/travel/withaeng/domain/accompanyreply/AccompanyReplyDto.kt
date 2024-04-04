@@ -160,7 +160,8 @@ data class ReadAccompanyReplyDTO(
                     accompanyId = accompanyReplyEntity.accompanyId,
                     parentId = accompanyReplyEntity.parentId,
                     depth = accompanyReplyEntity.depth,
-                    content = accompanyReplyEntity.content
+                    content = accompanyReplyEntity.content,
+
             )
         }
     }

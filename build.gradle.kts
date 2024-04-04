@@ -28,7 +28,7 @@ val springMockkVersion: String by project.extra
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    //apply(plugin = "org.jetbrains.kotlin.kapt")
+    apply(plugin = "org.jetbrains.kotlin.kapt")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
     apply(plugin = "org.springframework.boot")

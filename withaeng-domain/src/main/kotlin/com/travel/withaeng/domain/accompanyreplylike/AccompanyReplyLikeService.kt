@@ -14,8 +14,7 @@ import java.time.LocalDateTime
 class AccompanyReplyLikeService (
 
         private val accompanyReplyLikeRepository: AccompanyReplyLikeRepository,
-        private val accompanyReplyLikeHistRepository : AccompanyReplyLikeHistRepository,
-        private val accompanyDetailRepository: AccompanyDetailRepository
+        private val accompanyReplyLikeHistRepository : AccompanyReplyLikeHistRepository
 
 ) {
 
@@ -45,4 +44,7 @@ class AccompanyReplyLikeService (
         return param
     }
 
+    fun getAccompanyReplyLikeCnt(param : Long) : Long {
+        return accompanyReplyLikeRepository.countByReplyId(param)
+    }
 }
