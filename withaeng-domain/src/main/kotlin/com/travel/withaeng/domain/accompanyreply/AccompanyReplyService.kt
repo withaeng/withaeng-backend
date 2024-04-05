@@ -3,7 +3,10 @@ package com.travel.withaeng.domain.accompanyreply
 import com.travel.withaeng.common.exception.InvalidAccessException
 import com.travel.withaeng.common.exception.NotExistsException
 import com.travel.withaeng.domain.accompany.*
+import com.travel.withaeng.domain.accompanyreplylike.AccompanyReplyLikeRepository
+import com.travel.withaeng.domain.accompanyreplylike.AccompanyReplyLikeService
 import jakarta.persistence.Column
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -12,12 +15,13 @@ import org.springframework.transaction.annotation.Transactional
 class AccompanyReplyService (
 
         private val accompanyReplyRepository: AccompanyReplyRepository,
-        private val accompanyReplyHistRepository : AccompanyReplyHistRepository
+        private val accompanyReplyHistRepository : AccompanyReplyHistRepository,
+        private val accompanyReplyLikeService: AccompanyReplyLikeService
 
 ) {
 
     @Transactional
-    fun createAccompanyReply(param : CreateAccompanyReplyDTO) : ReadAccompanyReplyDTO {
+    fun createAccompanyReply(param : CreateAccompanyReplyDTO) : GetReplyDTO {
         val accompanyReplyEntity = param.toEntity()
         accompanyReplyRepository.save(accompanyReplyEntity)
 
@@ -29,7 +33,7 @@ class AccompanyReplyService (
     }
 
     @Transactional
-    fun modifyAccompanyReply(param : ModifyAccompanyReplyDTO) : ReadAccompanyReplyDTO {
+    fun modifyAccompanyReply(param : ModifyAccompanyReplyDTO) : GetReplyDTO {
 
         val accompanyReplyEntity = accompanyReplyRepository.findByReplyId(param.replyId)
 
@@ -51,7 +55,7 @@ class AccompanyReplyService (
     }
 
     @Transactional
-    fun deleteAccompanyReply(param : DeleteAccompanyReplyDTO) : ReadAccompanyReplyDTO {
+    fun deleteAccompanyReply(param : DeleteAccompanyReplyDTO) : DeleteAccompanyReplyDTO {
 
         val accompanyReplyEntity = accompanyReplyRepository.findByReplyId(param.replyId)
 
@@ -67,36 +71,42 @@ class AccompanyReplyService (
             accompanyReplyHistRepository.save(accompanyReplyHistEntity)
         }
 
-        return getOne(param.accompanyId)
+        return param
     }
 
-    fun getOne(param : Long) : ReadAccompanyReplyDTO {
+    fun getOne(param : Long) : GetReplyDTO {
 
         val accompanyReplyEntity = accompanyReplyRepository.findByReplyId(param)
+        val accompanyReplyLikeCnt = accompanyReplyLikeService.getAccompanyReplyLikeCnt(param)
 
         if(accompanyReplyEntity != null){
-            return ReadAccompanyReplyDTO.toDto(accompanyReplyEntity)
+            return GetReplyDTO.toDto(accompanyReplyEntity, accompanyReplyLikeCnt)
         }
 
         throw NotExistsException("존재하지 않는 동행 게시글 댓글 요청 입니다.")
     }
 
-    fun getList(param : Long) : List<ReadAccompanyReplyDTO> {
+    fun getList(param : Long) : List<GetReplyDTO>? {
 
-        val accompanyReplyList = accompanyReplyRepository.findByAccompanyId(param)
+        val accompanyReplyList = accompanyReplyRepository.getAccompanyReplyList(param)
 
         if(accompanyReplyList != null){
 
-            val resultList: List<ReadAccompanyReplyDTO> = accompanyReplyList.map {
-                accompanyReply ->
+            val replyIdList : List<Long> = accompanyReplyList.map {accompanyReplyEntity -> accompanyReplyEntity.replyId}.toList()
+            val accompanyReplyLikeList = accompanyReplyLikeService.getAccompanyReplyLikeList(replyIdList)
 
-                ReadAccompanyReplyDTO.toDto(accompanyReply)
+            for(reply in accompanyReplyList){
+                for(like in accompanyReplyLikeList){
+                    if(reply.replyId == like.replyId){
+                        reply.likeCnt = like.likeCnt
+                    }
+                }
             }
 
-            return resultList
+            return accompanyReplyList
         }
 
-        throw NotExistsException("존재하지 않는 동행 게시글 댓글 요청 입니다.")
+        return null
     }
 
 }

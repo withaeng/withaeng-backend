@@ -44,7 +44,11 @@ class AccompanyReplyLikeService (
         return param
     }
 
-    fun getAccompanyReplyLikeCnt(param : Long) : Long {
+    fun getAccompanyReplyLikeCnt(param: Long) : Long{
         return accompanyReplyLikeRepository.countByReplyId(param)
+    }
+
+    fun getAccompanyReplyLikeList(param : List<Long>) : List<GetReplyLikeDTO> {
+        return accompanyReplyLikeRepository.getAccompanyReplyLikeList(param)
     }
 }

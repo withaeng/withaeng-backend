@@ -2,6 +2,7 @@ package com.travel.withaeng.domain.accompany
 
 import com.travel.withaeng.common.exception.InvalidAccessException
 import com.travel.withaeng.common.exception.NotExistsException
+import com.travel.withaeng.domain.accompany.QAccompanyEntity.accompanyEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -11,7 +12,6 @@ class AccompanyService(
 
     private val accompanyRepository: AccompanyRepository,
     private val accompanyHistRepository : AccompanyHistRepository,
-    private val accompanyRepositoryCustom: AccompanyRepositoryCustom,
     private val accompanyDestinationRepository : AccompanyDestinationRepository,
     private val accompanyDetailRepository : AccompanyDetailRepository,
     private val accompanyTagRepository: AccompanyTagRepository
@@ -19,7 +19,7 @@ class AccompanyService(
 ) {
 
     @Transactional
-    fun createAccompany(param : CreateAccompanyDTO) : ReadAccompanyDTO {
+    fun createAccompany(param : CreateAccompanyDTO) : GetDTO {
         val accompanyEntity = param.toEntity()
         accompanyRepository.save(accompanyEntity)
 
@@ -40,7 +40,7 @@ class AccompanyService(
     }
 
     @Transactional
-    fun modifyAccompany(param : ModifyAccompanyDTO) : ReadAccompanyDTO {
+    fun modifyAccompany(param : ModifyAccompanyDTO) : GetDTO {
 
         val accompanyEntity = accompanyRepository.findByAccompanyId(param.accompanyId)
 
@@ -78,31 +78,21 @@ class AccompanyService(
         return getOne(param.accompanyId)
     }
 
-    fun getOne(param : Long) : ReadAccompanyDTO {
-        val accompanyEntity = accompanyRepository.findByAccompanyId(param)
+    fun getOne(param : Long) : GetDTO {
 
-        if(accompanyEntity != null){
-            val accompanyDestinationEntity = accompanyDestinationRepository.findByAccompanyId(param)
-            val accompanyDetailEntity = accompanyDetailRepository.findByAccompanyId(param)
+        val getAccompany = accompanyRepository.getAccompany(param)
+
+        if(getAccompany != null){
             val tagList:List<String>? = accompanyTagRepository.findByAccompanyId(param)?.map(AccompanyTagEntity::tagNm)
-            return ReadAccompanyDTO.toDto(accompanyEntity, accompanyDestinationEntity, accompanyDetailEntity, tagList)
+            getAccompany.tags = tagList
+            return getAccompany
         }
 
         throw NotExistsException("존재하지 않는 동행 게시글 조회 요청 입니다.")
     }
 
-    fun getList(param : SearchAccompanyDTO) : List<ReadAccompanyDTO> {
-
-        var accompanyList;
-
-        if(isDefaultSearch(param)){
-            accompanyList = accompanyRepositoryCustom.getAccompanyList(param)
-            return
-        }else{
-            accompanyList = accompanyDetailRepository.getAccompanyList(param)
-            return
-        }
-
+    fun getList(param : SearchAccompanyDTO) : List<GetDTO> {
+       return accompanyRepository.getAccompanyList(param)
     }
 
     @Transactional

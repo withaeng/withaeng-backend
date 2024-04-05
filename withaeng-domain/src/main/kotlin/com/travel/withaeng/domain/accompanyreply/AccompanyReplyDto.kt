@@ -141,29 +141,35 @@ class DeleteAccompanyReplyDTO(
 
 }
 
-data class ReadAccompanyReplyDTO(
+data class GetReplyDTO(
 
-        val replyId : Long,
-        val userId: Long,
-        val accompanyId: Long,
-        val parentId : Long,
-        val depth : Long,
+        var replyId : Long,
+        var userId: Long,
+        var accompanyId: Long,
+        var parentId : Long,
+        var depth : Long,
         var content: String,
-
+        var likeCnt : Long
 ){
+
+    fun addLikeCnt(cnt: Long){
+        likeCnt = cnt
+    }
+
     companion object {
         @JvmStatic
-        fun toDto(accompanyReplyEntity : AccompanyReplyEntity) : ReadAccompanyReplyDTO {
-            return ReadAccompanyReplyDTO(
-                    replyId = accompanyReplyEntity.replyId,
-                    userId = accompanyReplyEntity.userId,
-                    accompanyId = accompanyReplyEntity.accompanyId,
-                    parentId = accompanyReplyEntity.parentId,
-                    depth = accompanyReplyEntity.depth,
-                    content = accompanyReplyEntity.content,
-
-            )
+        fun toDto(accompanyReplyEntity : AccompanyReplyEntity, likeCnt : Long) : GetReplyDTO {
+            return GetReplyDTO(
+                replyId = accompanyReplyEntity.replyId,
+                userId = accompanyReplyEntity.userId,
+                accompanyId = accompanyReplyEntity.accompanyId,
+                parentId = accompanyReplyEntity.parentId,
+                depth = accompanyReplyEntity.depth,
+                content = accompanyReplyEntity.content,
+                likeCnt = likeCnt
+                )
         }
     }
+
 }
 

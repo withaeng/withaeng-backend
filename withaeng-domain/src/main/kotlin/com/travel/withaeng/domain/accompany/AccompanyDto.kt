@@ -8,6 +8,8 @@ import lombok.Getter
 import lombok.NoArgsConstructor
 import lombok.Setter
 import org.jetbrains.annotations.NotNull
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import java.time.LocalDate
 
 class AccompanyDto ()
@@ -164,59 +166,42 @@ class ModifyAccompanyDTO(
     }
 }
 
-data class ReadAccompanyDTO(
+data class GetDTO (
 
-    val accompanyId : Long,
-    val userId: Long,
-    val title: String,
-    val content: String,
-    val continent: String,
-    val country : String? = null,
-    val city : String? = null,
-    val startTripDate: LocalDate,
-    val endTripDate: LocalDate,
-    val bannerImageUrl: String? = null,
-    val accompanyCnt : Long,
-    val viewCnt : Long,
-    val likeCnt : Long,
-    val tags : List<String>? = null
+    var accompanyId : Long,
+    var userId: Long,
+    var title: String,
+    var content: String,
+    var continent: String,
+    var country : String? = null,
+    var city : String? = null,
+    var startTripDate: LocalDate,
+    var endTripDate: LocalDate,
+    var bannerImageUrl: String? = null,
+    var accompanyCnt : Long,
+    var viewCnt : Long,
+    var likeCnt : Long,
+    var tags : List<String>? = null
+
+)
+
+data class SearchAccompanyDTO(
+
+    var viewCntOrder: Boolean,//조회수 높은 순서
+
+    var likeCntOrder: Boolean,//좋아요 높은 순서
+
+    var startTripDate: LocalDate,//동행 모집 시작일시
+
+    var endTripDate: LocalDate,//동행 모집 마감일시
+
+    var pageIndex : Long,
+
+    var pageSize : Long
 
 ){
-    companion object {
-        @JvmStatic
-        fun toDto(accompanyEntity : AccompanyEntity, accompanyDestinationEntity: AccompanyDestinationEntity, accompanyDetailEntity: AccompanyDetailEntity, tagList : List<String>?) : ReadAccompanyDTO {
-            return ReadAccompanyDTO(
-                accompanyId = accompanyEntity.accompanyId,
-                userId = accompanyEntity.userId,
-                title = accompanyEntity.title,
-                content = accompanyEntity.content,
-                continent = accompanyDestinationEntity.continent,
-                country = accompanyDestinationEntity.country,
-                city = accompanyDestinationEntity.city,
-                startTripDate = accompanyEntity.startTripDate,
-                endTripDate = accompanyEntity.endTripDate,
-                bannerImageUrl = accompanyEntity.bannerImageUrl,
-                accompanyCnt = accompanyEntity.accompanyCnt,
-                viewCnt = accompanyDetailEntity.viewCnt,
-                likeCnt = accompanyDetailEntity.likeCnt,
-                tags = tagList
-            )
-        }
+    fun getCurrentPage() : Long{
+        return pageIndex * pageSize
     }
+
 }
-
-@Setter
-@Getter
-class SearchAccompanyDTO(
-
-    val viewCntOrder: Boolean,//조회수 높은 순서
-
-    val likeCntOrder: Boolean,//좋아요 높은 순서
-
-    val startTripDate: LocalDate,//동행 모집 시작일시
-
-    val endTripDate: LocalDate,//동행 모집 마감일시
-
-    val page : Int,
-    val pageIndex
-)

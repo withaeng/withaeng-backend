@@ -75,3 +75,9 @@ class DeleteAccompanyReplyLikeDTO(
     }
 
 }
+
+data class GetReplyLikeDTO(
+
+    var replyId : Long,
+    var likeCnt : Long
+)
