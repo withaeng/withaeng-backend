@@ -217,4 +217,6 @@ class SearchAccompanyDTO(
 
     val endTripDate: LocalDate,//동행 모집 마감일시
 
+    val page : Int,
+    val pageIndex
 )

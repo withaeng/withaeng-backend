@@ -93,12 +93,16 @@ class AccompanyService(
 
     fun getList(param : SearchAccompanyDTO) : List<ReadAccompanyDTO> {
 
-        val accompanyList = accompanyRepositoryCustom.getAccompanyList(param)
-        if(accompanyList != null){
-            return accompanyList
+        var accompanyList;
+
+        if(isDefaultSearch(param)){
+            accompanyList = accompanyRepositoryCustom.getAccompanyList(param)
+            return
+        }else{
+            accompanyList = accompanyDetailRepository.getAccompanyList(param)
+            return
         }
 
-        throw NotExistsException("존재하지 않는 동행 게시글 조회 요청 입니다.")
     }
 
     @Transactional

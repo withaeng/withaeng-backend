@@ -6,4 +6,5 @@ interface AccompanyRepository : JpaRepository<AccompanyEntity, Long> {
 
     fun findByAccompanyId(accompanyId : Long) : AccompanyEntity?
 
+    fun getAccompanyList() : List<AccompanyEntity>?
 }
