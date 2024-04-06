@@ -191,7 +191,12 @@ data class GetDTO (
     var tags : List<String>? = null,
     var openKakaoUrl : String
 
-)
+){
+    constructor(accompanyId : Long, userId : Long, title: String, content : String,
+                continent : String,country : String, city : String, startTripDate : LocalDate, endTripDate : LocalDate,
+                bannerImageUrl: String?, accompanyCnt: Long, viewCnt: Long, likeCnt: Long, openKakaoUrl: String) :
+            this(accompanyId, userId, title, content, continent, country, city, startTripDate, endTripDate, bannerImageUrl, accompanyCnt, viewCnt, likeCnt, null, openKakaoUrl)
+}
 
 data class SearchAccompanyDTO(
 

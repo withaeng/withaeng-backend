@@ -3,6 +3,7 @@ package com.travel.withaeng.domain.accompany
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
+import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.Sort
 import org.springframework.data.domain.Sort.Order
@@ -28,6 +29,7 @@ class AccompanyRepositoryCustomImpl (val jpaQueryFactory: JPAQueryFactory) : Acc
                 QAccompanyEntity.accompanyEntity.accompanyCnt,
                 QAccompanyDetailEntity.accompanyDetailEntity.viewCnt,
                 QAccompanyDetailEntity.accompanyDetailEntity.likeCnt,
+                QAccompanyDetailEntity.accompanyDetailEntity.openKakaoUrl
                 ))
             .from(QAccompanyEntity.accompanyEntity)
                 .innerJoin(QAccompanyDestinationEntity.accompanyDestinationEntity)
@@ -55,17 +57,31 @@ class AccompanyRepositoryCustomImpl (val jpaQueryFactory: JPAQueryFactory) : Acc
                 QAccompanyEntity.accompanyEntity.accompanyCnt,
                 QAccompanyDetailEntity.accompanyDetailEntity.viewCnt,
                 QAccompanyDetailEntity.accompanyDetailEntity.likeCnt,
+                QAccompanyDetailEntity.accompanyDetailEntity.openKakaoUrl
             ))
             .from(QAccompanyEntity.accompanyEntity)
                 .innerJoin(QAccompanyDestinationEntity.accompanyDestinationEntity)
                     .on(QAccompanyDestinationEntity.accompanyDestinationEntity.accompanyId.eq(QAccompanyEntity.accompanyEntity.accompanyId))
                 .innerJoin(QAccompanyDetailEntity.accompanyDetailEntity)
                     .on(QAccompanyDetailEntity.accompanyDetailEntity.accompanyId.eq(QAccompanyEntity.accompanyEntity.accompanyId))
-            .where(QAccompanyEntity.accompanyEntity.startTripDate.after(param.startTripDate), QAccompanyEntity.accompanyEntity.endTripDate.before(param.endTripDate))
+            .where(listWhere(param, QAccompanyEntity.accompanyEntity))
             .orderBy(QAccompanyEntity.accompanyEntity.updatedAt.desc())
             .offset(param.getCurrentPage())
             .limit(param.pageSize)
             .fetch()
     }
 
+    fun listWhere(param : SearchAccompanyDTO, accompanyEntity : QAccompanyEntity, ) : BooleanExpression {
+
+        var predicate: BooleanExpression = Expressions.asBoolean(true).isTrue
+
+        if (param.startTripDate != null && param.endTripDate != null) {
+            println(param.startTripDate)
+            predicate = predicate
+                .and(accompanyEntity.startTripDate.between(param.startTripDate, param.endTripDate)
+                .or(accompanyEntity.endTripDate.between(param.startTripDate, param.endTripDate)))
+        }
+
+        return predicate
+    }
 }
