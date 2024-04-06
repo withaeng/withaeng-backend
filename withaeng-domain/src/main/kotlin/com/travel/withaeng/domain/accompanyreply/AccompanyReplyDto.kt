@@ -152,6 +152,10 @@ data class GetReplyDTO(
         var likeCnt : Long
 ){
 
+    constructor(replyId : Long, userId : Long, accompanyId: Long, parentId : Long,
+                depth : Long,content : String) :
+            this(replyId, userId, accompanyId, parentId, depth, content, 0)
+
     fun addLikeCnt(cnt: Long){
         likeCnt = cnt
     }
