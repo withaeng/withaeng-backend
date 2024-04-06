@@ -18,19 +18,19 @@ class AccompanyDto ()
 @Getter
 class CreateAccompanyDTO(
 
-    @field:NotNull
+    @NotNull
     @JsonProperty("userId")
     val userId: Long,
 
-    @field:NotBlank(message = "제목은 필수 값 입니다.")
+    @NotBlank(message = "제목은 필수 값 입니다.")
     @JsonProperty("title")
     val title: String,
 
-    @field:NotBlank(message = "내용은 필수 값 입니다.")
+    @NotBlank(message = "내용은 필수 값 입니다.")
     @JsonProperty("content")
     val content: String,
 
-    @field:NotBlank(message = "대륙은 필수 값 입니다.")
+    @NotBlank(message = "대륙은 필수 값 입니다.")
     val continent: String,
 
     val country : String? = null,
@@ -48,7 +48,10 @@ class CreateAccompanyDTO(
     @field:NotNull
     val accompanyCnt : Long,
 
-    val tags : List<String>?
+    val tags : List<String>?,
+
+    @NotBlank(message = "카카오 오픈 채팅 URL은 필수 값 입니다.")
+    val openKakaoUrl : String
 
 ){
     fun toEntity(): AccompanyEntity {
@@ -95,7 +98,8 @@ class CreateAccompanyDTO(
         return AccompanyDetailEntity(
             accompanyId,
             0,
-            0
+            0,
+            this.openKakaoUrl
         )
     }
 
@@ -107,7 +111,7 @@ class CreateAccompanyDTO(
 
         val tagList = mutableListOf<AccompanyTagEntity>()
         for(tagNm in tags){
-            tagList.add(AccompanyTagEntity(accompanyId, tagNm))
+            tagList.add(AccompanyTagEntity(0, accompanyId, tagNm))
         }
 
         return tagList
@@ -148,7 +152,10 @@ class ModifyAccompanyDTO(
     @NotNull
     val accompanyCnt : Long,
 
-    val tags : List<String>?
+    val tags : List<String>?,
+
+    @NotBlank(message = "카카오 오픈 채팅 URL은 필수 값 입니다.")
+    val openKakaoUrl : String
 
 ){
     fun toTagEntity(accompanyId : Long) : List<AccompanyTagEntity>? {
@@ -159,7 +166,7 @@ class ModifyAccompanyDTO(
 
         val tagList = mutableListOf<AccompanyTagEntity>()
         for(tagNm in tags){
-            tagList.add(AccompanyTagEntity(accompanyId, tagNm))
+            tagList.add(AccompanyTagEntity(0, accompanyId, tagNm))
         }
 
         return tagList
@@ -181,7 +188,8 @@ data class GetDTO (
     var accompanyCnt : Long,
     var viewCnt : Long,
     var likeCnt : Long,
-    var tags : List<String>? = null
+    var tags : List<String>? = null,
+    var openKakaoUrl : String
 
 )
 

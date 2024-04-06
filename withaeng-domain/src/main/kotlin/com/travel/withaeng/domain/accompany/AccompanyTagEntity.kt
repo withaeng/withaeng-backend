@@ -8,6 +8,10 @@ import jakarta.persistence.*
 class AccompanyTagEntity (
 
      @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     @Column(name = "tag_id", nullable = false)
+     val tagId : Long,
+
      @Column(name = "accompany_id", nullable = false)
      val accompanyId : Long,
 

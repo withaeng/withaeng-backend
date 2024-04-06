@@ -51,6 +51,7 @@ class AccompanyService(
             }
 
             val accompanyDestinationEntity = accompanyDestinationRepository.findByAccompanyId(param.accompanyId)
+            val accompanyDetailEntity = accompanyDetailRepository.findByAccompanyId(param.accompanyId)
             val accompanyTagEntityList = param.toTagEntity(accompanyEntity.accompanyId)
 
             accompanyEntity.let {
@@ -60,6 +61,10 @@ class AccompanyService(
                 it.endTripDate = param.endTripDate
                 it.bannerImageUrl = param.bannerImageUrl
                 it.accompanyCnt = param.accompanyCnt
+            }
+
+            accompanyDetailEntity.let {
+                it.openKakaoUrl = param.openKakaoUrl
             }
 
             accompanyDestinationEntity.let {

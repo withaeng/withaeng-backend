@@ -17,7 +17,10 @@ class AccompanyDetailEntity (
     var viewCnt: Long = 0L,
 
     @Column(name = "like_cnt", nullable = false)
-    var likeCnt: Long = 0L
+    var likeCnt: Long = 0L,
+
+    @Column(name = "open_kakao_url", nullable = false)
+    var openKakaoUrl : String
 
 
 ) : AccompanyBaseEntity()
