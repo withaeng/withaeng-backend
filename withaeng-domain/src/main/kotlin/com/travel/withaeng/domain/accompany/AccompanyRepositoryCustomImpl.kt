@@ -1,14 +1,14 @@
 package com.travel.withaeng.domain.accompany
 
+import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
+import com.querydsl.jpa.impl.JPAQuery
 import com.querydsl.jpa.impl.JPAQueryFactory
-import org.springframework.data.domain.Sort
-import org.springframework.data.domain.Sort.Order
+import jakarta.persistence.Entity
 import org.springframework.stereotype.Repository
-import java.time.LocalDate
 
 @Repository
 class AccompanyRepositoryCustomImpl (val jpaQueryFactory: JPAQueryFactory) : AccompanyRepositoryCustom {
@@ -64,9 +64,9 @@ class AccompanyRepositoryCustomImpl (val jpaQueryFactory: JPAQueryFactory) : Acc
                     .on(QAccompanyDestinationEntity.accompanyDestinationEntity.accompanyId.eq(QAccompanyEntity.accompanyEntity.accompanyId))
                 .innerJoin(QAccompanyDetailEntity.accompanyDetailEntity)
                     .on(QAccompanyDetailEntity.accompanyDetailEntity.accompanyId.eq(QAccompanyEntity.accompanyEntity.accompanyId))
-            .where(listWhere(param, QAccompanyEntity.accompanyEntity))
-            .orderBy(QAccompanyEntity.accompanyEntity.updatedAt.desc())
-            .offset(param.getCurrentPage())
+            //.where(listWhere(param, QAccompanyEntity.accompanyEntity))
+            .orderBy(listOrder(param))
+            .offset(1)
             .limit(param.pageSize)
             .fetch()
     }
@@ -76,12 +76,21 @@ class AccompanyRepositoryCustomImpl (val jpaQueryFactory: JPAQueryFactory) : Acc
         var predicate: BooleanExpression = Expressions.asBoolean(true).isTrue
 
         if (param.startTripDate != null && param.endTripDate != null) {
-            println(param.startTripDate)
             predicate = predicate
                 .and(accompanyEntity.startTripDate.between(param.startTripDate, param.endTripDate)
                 .or(accompanyEntity.endTripDate.between(param.startTripDate, param.endTripDate)))
         }
 
         return predicate
+    }
+
+    fun listOrder(param : SearchAccompanyDTO) : OrderSpecifier<*> {
+        if (param.likeCntOrder) {
+            return OrderSpecifier(Order.DESC, QAccompanyDetailEntity.accompanyDetailEntity.likeCnt)
+        } else if(param.viewCntOrder) {
+            return OrderSpecifier(Order.DESC, QAccompanyDetailEntity.accompanyDetailEntity.viewCnt)
+        }else {
+            return OrderSpecifier(Order.DESC, QAccompanyEntity.accompanyEntity.updatedAt)
+        }
     }
 }

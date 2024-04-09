@@ -158,6 +158,22 @@ class ModifyAccompanyDTO(
     val openKakaoUrl : String
 
 ){
+    fun toHistEntity(entity: AccompanyEntity): AccompanyHistEntity {
+        return AccompanyHistEntity(
+                0,
+                entity.accompanyId,
+                entity.userId,
+                entity.title,
+                entity.content,
+                entity.accompanyStatusCd,
+                entity.startTripDate,
+                entity.endTripDate,
+                entity.bannerImageUrl,
+                entity.accompanyCnt,
+                ExecCd.UPDATE.execCd
+        )
+    }
+
     fun toTagEntity(accompanyId : Long) : List<AccompanyTagEntity>? {
 
         if(tags == null){
@@ -193,7 +209,8 @@ data class GetDTO (
 
 ){
     constructor(accompanyId : Long, userId : Long, title: String, content : String,
-                continent : String,country : String, city : String, startTripDate : LocalDate, endTripDate : LocalDate,
+                continent : String, country : String?, city : String?,
+                startTripDate : LocalDate, endTripDate : LocalDate,
                 bannerImageUrl: String?, accompanyCnt: Long, viewCnt: Long, likeCnt: Long, openKakaoUrl: String) :
             this(accompanyId, userId, title, content, continent, country, city, startTripDate, endTripDate, bannerImageUrl, accompanyCnt, viewCnt, likeCnt, null, openKakaoUrl)
 }
@@ -214,7 +231,7 @@ data class SearchAccompanyDTO(
 
 ){
     fun getCurrentPage() : Long{
-        return pageIndex * pageSize
+        return pageIndex -1 * pageSize
     }
 
 }

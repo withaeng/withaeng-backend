@@ -36,7 +36,7 @@ class AccompanyService(
             accompanyTagRepository.saveAll(accompanyTagEntityList)
         }
 
-        return getOne(accompanyHistEntity.accompanyId)
+        return getOne(accompanyEntity.accompanyId)
     }
 
     @Transactional
@@ -50,6 +50,7 @@ class AccompanyService(
                 throw InvalidAccessException("등록자와 수정자가 달라 수정 요청을 거부 합니다.")
             }
 
+            val accompanyHistEntity = param.toHistEntity(accompanyEntity)
             val accompanyDestinationEntity = accompanyDestinationRepository.findByAccompanyId(param.accompanyId)
             val accompanyDetailEntity = accompanyDetailRepository.findByAccompanyId(param.accompanyId)
             val accompanyTagEntityList = param.toTagEntity(accompanyEntity.accompanyId)
@@ -73,6 +74,7 @@ class AccompanyService(
                 it.city = param.city
             }
 
+            accompanyHistRepository.save(accompanyHistEntity)
             accompanyTagRepository.deleteByAccompanyId(accompanyEntity.accompanyId)
             if(accompanyTagEntityList != null){
                 accompanyTagRepository.saveAll(accompanyTagEntityList)
