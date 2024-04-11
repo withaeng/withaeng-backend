@@ -43,6 +43,11 @@ class AccompanyLikeService(
         accompanyLikeHistEntity.deletedAt = LocalDateTime.now()
         accompanyLikeHistRepository.save(accompanyLikeHistEntity)
 
+        val accompanyDetailEntity = accompanyDetailRepository.findByAccompanyId(param.accompanyId)
+        accompanyDetailEntity.let {
+            it.likeCnt--
+        }
+
         return param
     }
 
