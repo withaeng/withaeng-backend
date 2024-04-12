@@ -1,5 +1,6 @@
 package com.travel.withaeng.domain.accompanyreplylike
 
+import com.travel.withaeng.common.exception.InvalidAccessException
 import com.travel.withaeng.domain.accompany.AccompanyDetailRepository
 import com.travel.withaeng.domain.accompanylike.AccompanyLikeHistRepository
 import com.travel.withaeng.domain.accompanylike.AccompanyLikeRepository
@@ -20,6 +21,11 @@ class AccompanyReplyLikeService (
 
     @Transactional
     fun createAccompanyReplyLike(param : CreateAccompanyReplyLikeDTO) : CreateAccompanyReplyLikeDTO {
+
+        val replyLikeEntity = accompanyReplyLikeRepository.findByReplyIdAndUserId(param.replyId, param.userId)
+        if(replyLikeEntity != null){
+            throw InvalidAccessException("이미 해당 댓글의 좋아요 등록이 되어 있습니다.")
+        }
 
         val accompanyReplyLikeEntity = param.toEntity()
         accompanyReplyLikeRepository.save(accompanyReplyLikeEntity)

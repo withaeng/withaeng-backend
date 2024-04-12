@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/v1/accompany{accompanyId}/reply/{replyId}/like")
+@RequestMapping("/api/v1/accompany/{accompanyId}/reply/{replyId}/like")
 class AccompanyReplyLikeController(private val accompanyReplyLikeService: AccompanyReplyLikeService) {
 
     @PostMapping("")
