@@ -86,6 +86,7 @@ class AccompanyReplyService (
         throw NotExistsException("존재하지 않는 동행 게시글 댓글 요청 입니다.")
     }
 
+    //TODO 댓글당 좋아요 누른 userId 목록을 추가로 조회하여 리턴은 추후 처리
     fun getList(param : Long) : List<GetReplyDTO>? {
 
         val accompanyReplyList = accompanyReplyRepository.getAccompanyReplyList(param)
