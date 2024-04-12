@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 class AccompanyDto ()
 
@@ -37,10 +39,8 @@ class CreateAccompanyDTO(
 
     val city : String? = null,
 
-    @NotBlank
     val startTripDate: LocalDate,
 
-    @NotBlank
     val endTripDate: LocalDate,
 
     val bannerImageUrl: String? = null,
@@ -61,8 +61,8 @@ class CreateAccompanyDTO(
             this.title,
             this.content,
             AccompanyStatusCd.ING.statusCd,
-            this.startTripDate,
-            this.endTripDate,
+            this.startTripDate.atTime(LocalTime.MIN),
+            this.endTripDate.atTime(LocalTime.MAX),
             this.bannerImageUrl,
             this.accompanyCnt
         )
@@ -141,10 +141,8 @@ class ModifyAccompanyDTO(
 
     val city : String? = null,
 
-    @NotBlank
     val startTripDate: LocalDate,
 
-    @NotBlank
     val endTripDate: LocalDate,
 
     val bannerImageUrl: String? = null,
@@ -198,8 +196,8 @@ data class GetDTO (
     var continent: String,
     var country : String? = null,
     var city : String? = null,
-    var startTripDate: LocalDate,
-    var endTripDate: LocalDate,
+    var startTripDate: LocalDateTime,
+    var endTripDate: LocalDateTime,
     var bannerImageUrl: String? = null,
     var accompanyCnt : Long,
     var viewCnt : Long,
@@ -210,7 +208,7 @@ data class GetDTO (
 ){
     constructor(accompanyId : Long, userId : Long, title: String, content : String,
                 continent : String, country : String?, city : String?,
-                startTripDate : LocalDate, endTripDate : LocalDate,
+                startTripDate : LocalDateTime, endTripDate : LocalDateTime,
                 bannerImageUrl: String?, accompanyCnt: Long, viewCnt: Long, likeCnt: Long, openKakaoUrl: String) :
             this(accompanyId, userId, title, content, continent, country, city, startTripDate, endTripDate, bannerImageUrl, accompanyCnt, viewCnt, likeCnt, null, openKakaoUrl)
 }

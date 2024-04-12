@@ -4,6 +4,7 @@ import com.travel.withaeng.domain.AccompanyBaseEntity
 import jakarta.persistence.*
 import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @DynamicUpdate
 @Table(name = "accompany")
@@ -29,10 +30,10 @@ class AccompanyEntity(
     var accompanyStatusCd : String,
 
     @Column(name = "start_trip_date", nullable = false)
-    var startTripDate: LocalDate,
+    var startTripDate: LocalDateTime,
 
     @Column(name = "end_trip_date", nullable = false)
-    var endTripDate: LocalDate,
+    var endTripDate: LocalDateTime,
 
     @Column(name = "banner_image_url")
     var bannerImageUrl: String?,
@@ -40,4 +41,4 @@ class AccompanyEntity(
     @Column(name = "accompany_cnt", nullable = false)
     var accompanyCnt: Long = 0L,
 
-) : AccompanyBaseEntity()
+ ) : AccompanyBaseEntity()

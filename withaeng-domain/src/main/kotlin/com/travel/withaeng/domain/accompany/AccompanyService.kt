@@ -5,6 +5,8 @@ import com.travel.withaeng.common.exception.NotExistsException
 import com.travel.withaeng.domain.accompany.QAccompanyEntity.accompanyEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Service
 @Transactional(readOnly = true)
@@ -58,8 +60,8 @@ class AccompanyService(
             accompanyEntity.let {
                 it.title = param.title
                 it.content = param.content
-                it.startTripDate = param.startTripDate
-                it.endTripDate = param.endTripDate
+                it.startTripDate = param.startTripDate.atTime(LocalTime.MIN)
+                it.endTripDate = param.endTripDate.atTime(LocalTime.MAX)
                 it.bannerImageUrl = param.bannerImageUrl
                 it.accompanyCnt = param.accompanyCnt
             }

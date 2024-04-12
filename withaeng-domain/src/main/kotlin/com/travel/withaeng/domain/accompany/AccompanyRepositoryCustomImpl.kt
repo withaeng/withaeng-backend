@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQuery
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.Entity
 import org.springframework.stereotype.Repository
+import java.time.LocalTime
 
 @Repository
 class AccompanyRepositoryCustomImpl (val jpaQueryFactory: JPAQueryFactory) : AccompanyRepositoryCustom {
@@ -64,22 +65,27 @@ class AccompanyRepositoryCustomImpl (val jpaQueryFactory: JPAQueryFactory) : Acc
                     .on(QAccompanyDestinationEntity.accompanyDestinationEntity.accompanyId.eq(QAccompanyEntity.accompanyEntity.accompanyId))
                 .innerJoin(QAccompanyDetailEntity.accompanyDetailEntity)
                     .on(QAccompanyDetailEntity.accompanyDetailEntity.accompanyId.eq(QAccompanyEntity.accompanyEntity.accompanyId))
-            //.where(listWhere(param, QAccompanyEntity.accompanyEntity))
+            .where(listWhere(param, QAccompanyEntity.accompanyEntity))
             .orderBy(listOrder(param))
-            .offset(1)
+            .offset(param.pageIndex)
             .limit(param.pageSize)
             .fetch()
     }
 
-    fun listWhere(param : SearchAccompanyDTO, accompanyEntity : QAccompanyEntity, ) : BooleanExpression {
+    fun listWhere(param : SearchAccompanyDTO, accompanyEntity : QAccompanyEntity) : BooleanExpression {
 
         var predicate: BooleanExpression = Expressions.asBoolean(true).isTrue
+        val searchStartDate = param.startTripDate.atTime(LocalTime.MIN)
+        val searchEndDate = param.endTripDate.atTime(LocalTime.MAX)
 
-        if (param.startTripDate != null && param.endTripDate != null) {
-            predicate = predicate
-                .and(accompanyEntity.startTripDate.between(param.startTripDate, param.endTripDate)
-                .or(accompanyEntity.endTripDate.between(param.startTripDate, param.endTripDate)))
-        }
+        predicate = predicate
+            .and(
+                    accompanyEntity.startTripDate.between(searchStartDate, searchEndDate)
+                    .or(
+                    accompanyEntity.endTripDate.between(searchStartDate, searchEndDate)
+                    )
+                    .or(Expressions.allOf(accompanyEntity.startTripDate.before(searchStartDate), accompanyEntity.endTripDate.after(searchEndDate)))
+            )
 
         return predicate
     }
