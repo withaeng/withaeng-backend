@@ -1,14 +1,15 @@
 package com.travel.withaeng.domain.accompany
 
+import com.querydsl.core.BooleanBuilder
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
+import com.querydsl.core.types.dsl.DateTimeExpression
 import com.querydsl.core.types.dsl.Expressions
-import com.querydsl.jpa.impl.JPAQuery
 import com.querydsl.jpa.impl.JPAQueryFactory
-import jakarta.persistence.Entity
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 @Repository
@@ -42,7 +43,7 @@ class AccompanyRepositoryCustomImpl (val jpaQueryFactory: JPAQueryFactory) : Acc
     }
 
     override fun getAccompanyList(param : SearchAccompanyDTO) : List<GetDTO>{
-
+        println("currentPage:" + param.getCurrentPage());
         return jpaQueryFactory
             .select(Projections.constructor(GetDTO::class.java,
                 QAccompanyEntity.accompanyEntity.accompanyId,
@@ -67,27 +68,22 @@ class AccompanyRepositoryCustomImpl (val jpaQueryFactory: JPAQueryFactory) : Acc
                     .on(QAccompanyDetailEntity.accompanyDetailEntity.accompanyId.eq(QAccompanyEntity.accompanyEntity.accompanyId))
             .where(listWhere(param, QAccompanyEntity.accompanyEntity))
             .orderBy(listOrder(param))
-            .offset(param.pageIndex)
+            .offset(param.getCurrentPage())
             .limit(param.pageSize)
             .fetch()
     }
 
-    fun listWhere(param : SearchAccompanyDTO, accompanyEntity : QAccompanyEntity) : BooleanExpression {
+    fun listWhere(param : SearchAccompanyDTO, accompanyEntity : QAccompanyEntity) : BooleanBuilder {
 
-        var predicate: BooleanExpression = Expressions.asBoolean(true).isTrue
-        val searchStartDate = param.startTripDate.atTime(LocalTime.MIN)
-        val searchEndDate = param.endTripDate.atTime(LocalTime.MAX)
+        val builder = BooleanBuilder()
 
-        predicate = predicate
-            .and(
-                    accompanyEntity.startTripDate.between(searchStartDate, searchEndDate)
-                    .or(
-                    accompanyEntity.endTripDate.between(searchStartDate, searchEndDate)
-                    )
-                    .or(Expressions.allOf(accompanyEntity.startTripDate.before(searchStartDate), accompanyEntity.endTripDate.after(searchEndDate)))
-            )
+        val startDate = param.startTripDate.atStartOfDay()
+        val endDate = param.endTripDate.atTime(LocalTime.MAX)
 
-        return predicate
+        builder.and(accompanyEntity.startTripDate.after(startDate))
+        builder.and(accompanyEntity.endTripDate.before(endDate))
+
+        return builder
     }
 
     fun listOrder(param : SearchAccompanyDTO) : OrderSpecifier<*> {
