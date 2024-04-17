@@ -7,4 +7,5 @@ interface AccompanyReplyLikeRepository : JpaRepository<AccompanyReplyLikeEntity,
 
     fun countByReplyId(replyId: Long) : Long
 
+    fun findByReplyIdAndUserId(replyId: Long, userId:Long) : AccompanyReplyLikeEntity?
 }

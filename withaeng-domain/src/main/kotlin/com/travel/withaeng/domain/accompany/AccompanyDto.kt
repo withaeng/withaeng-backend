@@ -229,7 +229,7 @@ data class SearchAccompanyDTO(
 
 ){
     fun getCurrentPage() : Long{
-        return pageIndex -1 * pageSize
+        return (this.pageIndex -1) * this.pageSize
     }
 
 }
