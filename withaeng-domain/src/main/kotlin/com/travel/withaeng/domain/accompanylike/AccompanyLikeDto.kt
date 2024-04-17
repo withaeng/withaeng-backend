@@ -1,15 +1,9 @@
 package com.travel.withaeng.domain.accompanylike
 
-import com.travel.withaeng.common.cd.AccompanyStatusCd
 import com.travel.withaeng.common.cd.ExecCd
-import com.travel.withaeng.domain.accompany.AccompanyDestinationEntity
-import com.travel.withaeng.domain.accompany.AccompanyEntity
-import com.travel.withaeng.domain.accompany.AccompanyHistEntity
-import jakarta.validation.constraints.NotBlank
 import lombok.Getter
 import lombok.Setter
 import org.jetbrains.annotations.NotNull
-import java.time.LocalDate
 
 class AccompanyLikeDto {
 }
