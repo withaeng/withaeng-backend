@@ -6,7 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 class JwtAuthentication(private val userInfo: UserInfo) : Authentication {
 
-    var isAuthenticated = true
+    private var isAuthenticated = true
 
     override fun getName(): String = userInfo.nickname
 
@@ -15,7 +15,7 @@ class JwtAuthentication(private val userInfo: UserInfo) : Authentication {
 
     override fun getCredentials(): Any = userInfo.id
 
-    override fun getDetails(): Any = userInfo.toDetails()
+    override fun getDetails(): Any = userInfo.toString()
 
     override fun getPrincipal(): Any = userInfo
 
