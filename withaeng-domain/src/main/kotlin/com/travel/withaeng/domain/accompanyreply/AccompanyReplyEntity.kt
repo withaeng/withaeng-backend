@@ -23,6 +23,9 @@ class AccompanyReplyEntity(
     @Column(name = "depth", nullable = false)
     val depth : Long,
 
+    @Column(name = "reply_order", nullable = false)
+    val replyOrder : Long,
+
     @Column(name = "user_id", nullable = false)
     val userId: Long,
 

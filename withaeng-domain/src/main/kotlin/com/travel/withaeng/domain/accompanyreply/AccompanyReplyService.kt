@@ -2,11 +2,8 @@ package com.travel.withaeng.domain.accompanyreply
 
 import com.travel.withaeng.common.exception.InvalidAccessException
 import com.travel.withaeng.common.exception.NotExistsException
-import com.travel.withaeng.domain.accompany.*
-import com.travel.withaeng.domain.accompanyreplylike.AccompanyReplyLikeRepository
+import com.travel.withaeng.domain.accompany.AccompanyTagEntity
 import com.travel.withaeng.domain.accompanyreplylike.AccompanyReplyLikeService
-import jakarta.persistence.Column
-import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -104,7 +101,24 @@ class AccompanyReplyService (
                 }
             }
 
-            return accompanyReplyList
+            val parentList = accompanyReplyList.stream().filter{
+                e-> e.parentId.equals(0L)
+            }.toList()
+
+            val sortList = accompanyReplyList.sortedWith(compareBy({it.parentId},{it.depth}, {it.replyOrder})).toList()
+            val resultList = mutableListOf<GetReplyDTO>()
+
+            parentList.stream().forEach{
+                e->
+                resultList.add(e)
+                sortList.forEach{a->
+                    if(e.replyId.equals(a.parentId)){
+                        resultList.add(a)
+                    }
+                }
+            }
+
+            return resultList
         }
 
         return null

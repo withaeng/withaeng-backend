@@ -32,6 +32,9 @@ class CreateAccompanyReplyDTO(
     @NotNull
     val depth : Long,
 
+    @NotNull
+    val replyOrder : Long,
+
     @NotBlank(message = "댓글 내용이 존재하지 않습니다.")
     var content: String,
 
@@ -42,6 +45,7 @@ class CreateAccompanyReplyDTO(
                 this.accompanyId,
                 this.parentId,
                 this.depth,
+                this.replyOrder,
                 this.userId,
                 this.content
         )
@@ -54,6 +58,7 @@ class CreateAccompanyReplyDTO(
                 entity.accompanyId,
                 entity.parentId,
                 entity.depth,
+                entity.replyOrder,
                 entity.userId,
                 entity.content,
                 ExecCd.CREATE.execCd
@@ -81,6 +86,9 @@ class ModifyAccompanyReplyDTO(
         @NotNull
         val depth : Long,
 
+        @NotNull
+        val replyOrder : Long,
+
         @NotBlank(message = "댓글 내용이 존재하지 않습니다.")
         var content: String,
 
@@ -91,6 +99,7 @@ class ModifyAccompanyReplyDTO(
                 this.accompanyId,
                 this.parentId,
                 this.depth,
+                this.replyOrder,
                 this.userId,
                 this.content
         )
@@ -103,6 +112,7 @@ class ModifyAccompanyReplyDTO(
                 entity.accompanyId,
                 entity.parentId,
                 entity.depth,
+                entity.replyOrder,
                 entity.userId,
                 entity.content,
                 ExecCd.UPDATE.execCd
@@ -133,6 +143,7 @@ class DeleteAccompanyReplyDTO(
                 entity.accompanyId,
                 entity.parentId,
                 entity.depth,
+                entity.replyOrder,
                 entity.userId,
                 entity.content,
                 ExecCd.DELETE.execCd
@@ -148,13 +159,14 @@ data class GetReplyDTO(
         var accompanyId: Long,
         var parentId : Long,
         var depth : Long,
+        var replyOrder : Long,
         var content: String,
         var likeCnt : Long
 ){
 
     constructor(replyId : Long, userId : Long, accompanyId: Long, parentId : Long,
-                depth : Long,content : String) :
-            this(replyId, userId, accompanyId, parentId, depth, content, 0)
+                depth : Long, replyOrder : Long, content : String) :
+            this(replyId, userId, accompanyId, parentId, depth, replyOrder, content, 0)
 
     fun addLikeCnt(cnt: Long){
         likeCnt = cnt
@@ -169,6 +181,7 @@ data class GetReplyDTO(
                 accompanyId = accompanyReplyEntity.accompanyId,
                 parentId = accompanyReplyEntity.parentId,
                 depth = accompanyReplyEntity.depth,
+                replyOrder = accompanyReplyEntity.replyOrder,
                 content = accompanyReplyEntity.content,
                 likeCnt = likeCnt
                 )

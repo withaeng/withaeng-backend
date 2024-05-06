@@ -17,6 +17,7 @@ class AccompanyReplyRepositoryCustomImpl (val jpaQueryFactory: JPAQueryFactory) 
                 QAccompanyReplyEntity.accompanyReplyEntity.accompanyId,
                 QAccompanyReplyEntity.accompanyReplyEntity.parentId,
                 QAccompanyReplyEntity.accompanyReplyEntity.depth,
+                QAccompanyReplyEntity.accompanyReplyEntity.replyOrder,
                 QAccompanyReplyEntity.accompanyReplyEntity.content,
             ))
             .from(QAccompanyReplyEntity.accompanyReplyEntity)
