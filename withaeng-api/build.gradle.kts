@@ -11,6 +11,7 @@ val swaggerVersion: String by project.extra
 
 dependencies {
     implementation(project(":withaeng-domain"))
+    implementation(project(":withaeng-infrastructure"))
     implementation(project(":withaeng-common"))
     implementation(project(":withaeng-external"))
     implementation("org.springframework.boot:spring-boot-starter-web")

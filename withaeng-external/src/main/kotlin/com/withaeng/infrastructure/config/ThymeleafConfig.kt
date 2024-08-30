@@ -1,4 +1,4 @@
-package com.withaeng.external.ses.config
+package com.withaeng.infrastructure.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

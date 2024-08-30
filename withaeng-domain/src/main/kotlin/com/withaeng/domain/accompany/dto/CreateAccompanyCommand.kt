@@ -1,16 +1,16 @@
-package com.withaeng.api.applicationservice.accompany.dto
+package com.withaeng.domain.accompany.dto
 
-import com.withaeng.domain.accompany.*
+import com.withaeng.domain.accompany.AccompanyAge
+import com.withaeng.domain.accompany.AccompanyDestination
+import com.withaeng.domain.accompany.UpdateAccompanyDto
 import com.withaeng.domain.user.UserPreferAccompanyGender
 import java.time.LocalDate
 
-data class CreateAccompanyServiceRequest(
+data class CreateAccompanyCommand(
     val userId: Long,
     val title: String,
     val content: String,
-    val continent: String,
-    val country: String,
-    val city: String,
+    val destination: AccompanyDestination,
     val startTripDate: LocalDate,
     val endTripDate: LocalDate,
     val bannerImageUrl: String? = null,
@@ -20,26 +20,6 @@ data class CreateAccompanyServiceRequest(
     val startAccompanyAge: AccompanyAge,
     val endAccompanyAge: AccompanyAge,
     val preferGender: UserPreferAccompanyGender,
-)
-
-fun CreateAccompanyServiceRequest.toDomainDto(): CreateAccompanyDto = CreateAccompanyDto(
-    userId = userId,
-    title = title,
-    content = content,
-    destination = AccompanyDestination(
-        continent = Continent.valueOf(continent),
-        country = Country.valueOf(country),
-        city = City.valueOf(city)
-    ),
-    startTripDate = startTripDate,
-    endTripDate = endTripDate,
-    bannerImageUrl = bannerImageUrl,
-    memberCount = memberCount,
-    tagIds = tagIds?.toSet(),
-    openKakaoUrl = openKakaoUrl,
-    startAccompanyAge = startAccompanyAge,
-    endAccompanyAge = endAccompanyAge,
-    preferGender = preferGender,
 )
 
 data class UpdateAccompanyServiceRequest(

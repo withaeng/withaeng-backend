@@ -1,17 +1,20 @@
-package com.withaeng.domain.accompany
+package com.withaeng.infrastructure.accompany
 
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
+import com.withaeng.domain.accompany.FindAccompanyDto
 import com.withaeng.domain.accompany.QAccompany.accompany
+import com.withaeng.domain.accompany.QFindAccompanyDto
+import com.withaeng.domain.accompany.QFindAccompanyUserInfoDto
 import com.withaeng.domain.accompanylike.QAccompanyLike.accompanyLike
 import com.withaeng.domain.accompanystatistics.QAccompanyStatistics.accompanyStatistics
 import com.withaeng.domain.user.QUser.user
+import org.springframework.stereotype.Component
 
+@Component
 class AccompanyRepositoryImpl(
-
     private val queryFactory: JPAQueryFactory
-
-) : AccompanyRepositoryCustom {
+) : AccompanyQuerydslRepository {
 
     override fun findAccompanyDetail(accompanyId: Long): FindAccompanyDto? {
         return queryFactory

@@ -1,4 +1,4 @@
-package com.withaeng.external.ses.config
+package com.withaeng.infrastructure.config
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials

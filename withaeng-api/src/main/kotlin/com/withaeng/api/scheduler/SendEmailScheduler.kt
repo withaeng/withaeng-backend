@@ -5,8 +5,8 @@ import com.withaeng.api.common.Constants.Url.VALIDATING_EMAIL_URL
 import com.withaeng.domain.validateemail.ValidatingEmailService
 import com.withaeng.domain.validateemail.ValidatingEmailStatus
 import com.withaeng.domain.validateemail.ValidatingEmailType
-import com.withaeng.external.ses.MailSender
-import com.withaeng.external.ses.MailType
+import com.withaeng.infrastructure.MailSender
+import com.withaeng.infrastructure.MailType
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Async

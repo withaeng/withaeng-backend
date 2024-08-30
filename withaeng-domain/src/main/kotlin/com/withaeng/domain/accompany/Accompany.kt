@@ -1,6 +1,7 @@
 package com.withaeng.domain.accompany
 
 import com.withaeng.domain.BaseEntity
+import com.withaeng.domain.accompany.dto.CreateAccompanyCommand
 import com.withaeng.domain.accompanystatistics.AccompanyStatistics
 import com.withaeng.domain.converter.TagIdsConverter
 import com.withaeng.domain.user.UserPreferAccompanyGender
@@ -90,7 +91,7 @@ class Accompany(
     }
 
     companion object {
-        fun create(params: CreateAccompanyDto): Accompany {
+        fun create(params: CreateAccompanyCommand): Accompany {
             val accompany = Accompany(
                 userId = params.userId,
                 title = params.title,

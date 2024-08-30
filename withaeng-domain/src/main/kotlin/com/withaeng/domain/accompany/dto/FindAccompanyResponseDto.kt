@@ -1,4 +1,4 @@
-package com.withaeng.api.applicationservice.accompany.dto
+package com.withaeng.domain.accompany.dto
 
 import com.withaeng.domain.accompany.AccompanyDestination
 import com.withaeng.domain.accompany.FindAccompanyDto

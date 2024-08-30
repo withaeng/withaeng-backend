@@ -3,7 +3,8 @@ include(
     "withaeng-api",
     "withaeng-domain",
     "withaeng-common",
-    "withaeng-external"
+    "withaeng-external",
+    "withaeng-infrastructure",
 )
 
 pluginManagement {

@@ -1,4 +1,4 @@
-package com.withaeng.external.ses
+package com.withaeng.infrastructure
 
 enum class MailType(val templateName: String) {
     VALIDATE_EMAIL("validate-email-template"),

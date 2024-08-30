@@ -1,4 +1,4 @@
-package com.withaeng.external.ses
+package com.withaeng.infrastructure
 
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
 import com.amazonaws.services.simpleemail.model.*

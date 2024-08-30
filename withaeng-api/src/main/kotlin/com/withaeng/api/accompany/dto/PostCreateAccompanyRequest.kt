@@ -1,16 +1,14 @@
-package com.withaeng.api.controller.accompany.dto
+package com.withaeng.api.accompany.dto
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.withaeng.domain.accompany.AccompanyAge
-import com.withaeng.domain.accompany.AccompanyAgeDeserializer
+import com.withaeng.domain.accompany.*
+import com.withaeng.domain.accompany.dto.CreateAccompanyCommand
 import com.withaeng.domain.user.UserPreferAccompanyGender
-import com.withaeng.api.applicationservice.accompany.dto.CreateAccompanyServiceRequest
-import com.withaeng.api.applicationservice.accompany.dto.UpdateAccompanyServiceRequest
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
 
 @Schema(description = "[Request] 동행 게시글 생성")
-data class CreateAccompanyRequest(
+data class PostCreateAccompanyRequest(
     @Schema(description = "동행 게시글 제목")
     val title: String,
 
@@ -57,15 +55,20 @@ data class CreateAccompanyRequest(
 )
 
 @Schema(description = "[Request] 동행 게시글 수정")
-fun CreateAccompanyRequest.toServiceRequest(
+fun PostCreateAccompanyRequest.toCommand(
     userId: Long
-): CreateAccompanyServiceRequest = CreateAccompanyServiceRequest(
+): CreateAccompanyCommand = CreateAccompanyCommand(
     userId = userId,
     title = title,
+    destination = AccompanyDestination(
+        continent = Continent.valueOf(continent),
+        country = Country.valueOf(country),
+        city = City.valueOf(city)
+    ),
     content = content,
-    continent = continent,
-    country = country,
-    city = city,
+//    continent = continent,
+//    country = country,
+//    city = city,
     startTripDate = startTripDate,
     endTripDate = endTripDate,
     bannerImageUrl = bannerImageUrl,
@@ -75,22 +78,4 @@ fun CreateAccompanyRequest.toServiceRequest(
     startAccompanyAge = startAccompanyAge,
     endAccompanyAge = endAccompanyAge,
     preferGender = preferGender,
-)
-
-data class UpdateAccompanyRequest(
-    @Schema(description = "동행 게시글 내용")
-    val content: String? = null,
-
-    @Schema(description = "동행 게시글에 부착할 태그 아이디 리스트")
-    val tagIds: Set<Long>? = null,
-)
-
-fun UpdateAccompanyRequest.toServiceRequest(
-    accompanyId: Long,
-    userId: Long
-): UpdateAccompanyServiceRequest = UpdateAccompanyServiceRequest(
-    accompanyId = accompanyId,
-    userId = userId,
-    content = content,
-    tagIds = tagIds,
 )

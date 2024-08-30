@@ -1,25 +1,27 @@
 package com.withaeng.domain.accompany
 
-import com.withaeng.common.exception.WithaengException
-import com.withaeng.common.exception.WithaengExceptionType
+import com.withaeng.domain.accompany.dto.CreateAccompanyCommand
+import com.withaeng.domain.accompany.dto.FindAccompanyDetailResult
 import com.withaeng.domain.tag.TagRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional(readOnly = true)
 class AccompanyService(
-    private val accompanyRepository: AccompanyRepository,
-    private val tagRepository: TagRepository
+    private val accompanyReader: AccompanyReader,
+    private val accompanyStore: AccompanyStore,
+    private val tagRepository: TagRepository,
 ) {
+    companion object {
+        private const val NOT_EXIST_MESSAGE = "해당하는 동행을 찾을 수 없습니다."
+    }
 
     @Transactional
-    fun create(params: CreateAccompanyDto): AccompanyDto {
-        val actualTagIds = filterValidTagIds(params.tagIds)
-        val actualParams = params.copy(tagIds = actualTagIds)
+    fun create(command: CreateAccompanyCommand): AccompanyDto {
+        val actualTagIds = filterValidTagIds(command.tagIds)
+        val actualParams = command.copy(tagIds = actualTagIds)
         val accompanyEntity = Accompany.create(actualParams)
-        accompanyRepository.save(accompanyEntity)
+        accompanyStore.save(accompanyEntity)
         return accompanyEntity.toDto()
     }
 
@@ -34,12 +36,9 @@ class AccompanyService(
         return accompany.toDto()
     }
 
-    fun detail(accompanyId: Long): FindAccompanyDto {
-        return accompanyRepository.findAccompanyDetail(accompanyId)
-            ?: throw WithaengException.of(
-                type = WithaengExceptionType.NOT_EXIST,
-                message = NOT_EXIST_MESSAGE
-            )
+    @Transactional(readOnly = true)
+    fun detail(accompanyId: Long): FindAccompanyDetailResult {
+        return accompanyReader.findAccompanyDetail(accompanyId)
     }
 
     @Transactional
@@ -48,14 +47,14 @@ class AccompanyService(
         accompany.increaseViewCount()
     }
 
-    private fun findById(accompanyId: Long) =
-        accompanyRepository.findByIdOrNull(accompanyId) ?: throw WithaengException.of(
-            type = WithaengExceptionType.NOT_EXIST,
-            message = NOT_EXIST_MESSAGE
-        )
+    private fun findById(accompanyId: Long): Accompany {
+        return accompanyReader.findByIdOrNull(accompanyId)
+    }
 
-    fun findAll(): List<AccompanyDto> {
-        return accompanyRepository.findAll().map { it.toDto() }
+    // TODO FindAccompanySimpleResult
+    fun findAll(): List<FindAccompanyDetailResult> {
+        return accompanyReader.findAll()
+            .map(FindAccompanyDetailResult::of)
     }
 
     private fun filterValidTagIds(tagIds: Set<Long>?): Set<Long> {
@@ -63,9 +62,5 @@ class AccompanyService(
         return tagRepository.findAllById(tagIds)
             .map { it.id }
             .toSet()
-    }
-
-    companion object {
-        private const val NOT_EXIST_MESSAGE = "해당하는 동행을 찾을 수 없습니다."
     }
 }
