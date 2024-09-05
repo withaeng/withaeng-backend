@@ -45,7 +45,7 @@ data class AccompanyDto(
 
 fun Accompany.toDto(): AccompanyDto = AccompanyDto(
     id = id,
-    userId = userId,
+    userId = hostId,
     title = title,
     content = content,
     destination = accompanyDestination,

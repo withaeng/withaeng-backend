@@ -1,8 +1,10 @@
 package com.withaeng.api.controller.accompany
 
 import com.withaeng.api.applicationservice.accompany.AccompanyApplicationService
+import com.withaeng.api.applicationservice.accompany.dto.AcceptJoinAccompanyCommand
 import com.withaeng.api.applicationservice.accompany.dto.AccompanyResponse
 import com.withaeng.api.applicationservice.accompany.dto.FindAccompanyResponse
+import com.withaeng.api.applicationservice.accompany.dto.RequestJoinAccompanyCommand
 import com.withaeng.api.common.ApiResponse
 import com.withaeng.api.controller.accompany.dto.CreateAccompanyRequest
 import com.withaeng.api.controller.accompany.dto.UpdateAccompanyRequest
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/accompany")
 class AccompanyController(
-    private val accompanyApplicationService: AccompanyApplicationService
+    private val accompanyApplicationService: AccompanyApplicationService,
 ) {
 
     @Operation(
@@ -32,7 +34,7 @@ class AccompanyController(
     @PostMapping
     fun create(
         @GetAuth userInfo: UserInfo,
-        @RequestBody @Valid request: CreateAccompanyRequest
+        @RequestBody @Valid request: CreateAccompanyRequest,
     ): ApiResponse<AccompanyResponse> {
         return ApiResponse.success(
             accompanyApplicationService.create(request.toServiceRequest(userInfo.id))
@@ -43,7 +45,7 @@ class AccompanyController(
     @GetMapping("/{accompanyId}")
     fun retrieve(
         @GetAuth userInfo: UserInfo?,
-        @PathVariable("accompanyId") accompanyId: Long
+        @PathVariable("accompanyId") accompanyId: Long,
     ): ApiResponse<FindAccompanyResponse> {
         return ApiResponse.success(
             accompanyApplicationService.detail(accompanyId, userInfo?.id)
@@ -67,7 +69,7 @@ class AccompanyController(
     fun update(
         @GetAuth userInfo: UserInfo,
         @PathVariable accompanyId: Long,
-        @RequestBody @Valid param: UpdateAccompanyRequest
+        @RequestBody @Valid param: UpdateAccompanyRequest,
     ): ApiResponse<AccompanyResponse> {
         return ApiResponse.success(
             accompanyApplicationService.update(
@@ -75,6 +77,34 @@ class AccompanyController(
                     accompanyId = accompanyId,
                     userId = userInfo.id
                 )
+            )
+        )
+    }
+
+    @PostMapping("/{accompanyId}/join-requests")
+    fun requestJoin(
+        @GetAuth userInfo: UserInfo,
+        @PathVariable accompanyId: Long,
+    ) {
+        accompanyApplicationService.requestJoin(
+            RequestJoinAccompanyCommand(
+                userId = userInfo.id,
+                accompanyId = accompanyId
+            )
+        )
+    }
+
+    @PatchMapping("/{accompanyId}/join-requests/{joinRequestId}")
+    fun acceptJoin(
+        @GetAuth userInfo: UserInfo,
+        @PathVariable accompanyId: Long,
+        @PathVariable joinRequestId: Long,
+    ) {
+        accompanyApplicationService.acceptJoin(
+            AcceptJoinAccompanyCommand(
+                userId = userInfo.id,
+                accompanyId = accompanyId,
+                joinRequestId = joinRequestId
             )
         )
     }

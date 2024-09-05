@@ -14,8 +14,8 @@ import java.time.LocalDate
 @Table(name = "accompany")
 class Accompany(
 
-    @Column(name = "user_id", nullable = false)
-    val userId: Long,
+    @Column(name = "host_id", nullable = false)
+    val hostId: Long,
 
     @Column(name = "title", nullable = false)
     @Comment("동행 제목")
@@ -72,10 +72,53 @@ class Accompany(
     @Comment("태그 목록")
     var tagIds: Set<Long> = setOf(),
 
+    @Embedded
+    @Comment("동행 가입 신청 목록")
+    var joinRequests: AccompanyJoinRequests = AccompanyJoinRequests(),
+
     @OneToOne(mappedBy = "accompany", cascade = [CascadeType.ALL], orphanRemoval = true)
     var accompanyStatistics: AccompanyStatistics? = null,
 
     ) : BaseEntity() {
+
+    // ##############################################################################################################
+    // 동행 참여 요청 - 게스트
+    fun requestJoin(userId: Long) {
+        if (this.isHost(userId)) {
+            throw IllegalArgumentException("This User is Host")
+        }
+        validIsNotFull()
+        this.joinRequests.requestJoin(userId, this)
+    }
+
+    // 동행 참여 승인 - 호스트
+    fun acceptJoin(hostId: Long, joinRequestId: Long) {
+        if (!this.isHost(hostId)) {
+            throw IllegalArgumentException("This User is not Host")
+        }
+        validIsNotFull()
+        this.joinRequests.acceptJoin(hostId, joinRequestId)
+        if (this.isFull()) {
+            this.accompanyStatus = AccompanyStatus.COMPLETE
+        }
+    }
+
+    private fun isHost(userId: Long): Boolean {
+        return this.hostId == userId
+    }
+
+    private fun isFull(): Boolean {
+        return this.accompanyStatus == AccompanyStatus.COMPLETE ||
+                this.memberCount <= this.joinRequests.acceptedCount() + 1
+    }
+
+    private fun validIsNotFull() {
+        if (this.isFull()) {
+            throw IllegalArgumentException("This Accompany is Full")
+        }
+    }
+
+    // ##############################################################################################################
 
     fun increaseViewCount() {
         this.accompanyStatistics?.increaseViewCount()
@@ -83,7 +126,7 @@ class Accompany(
 
     fun update(
         content: String?,
-        tagIds: Set<Long>?
+        tagIds: Set<Long>?,
     ) {
         this.content = content ?: this.content
         this.tagIds = tagIds ?: this.tagIds
@@ -92,7 +135,7 @@ class Accompany(
     companion object {
         fun create(params: CreateAccompanyDto): Accompany {
             val accompany = Accompany(
-                userId = params.userId,
+                hostId = params.userId,
                 title = params.title,
                 content = params.content,
                 startTripDate = params.startTripDate,
