@@ -77,4 +77,4 @@ jobs:
             export JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
             export JASYPT_PASSWORD=${{ secrets.JASYPT_PASSWORD }}
             sudo -E docker compose -f /tmp/withaeng-api/docker-compose.yml down
-            sudo -E docker compose -f /tmp/withaeng-api/docker-compose.yml up -d
+            sudo -E docker compose -f /tmp/withaeng-api/docker-compose.yml up --build -d
