@@ -34,7 +34,7 @@ jobs:
         shell: bash
 
       - name: 프로젝트 빌드
-        run: ./gradlew clean build
+        run: ./gradlew clean :withaeng-api:build
         shell: bash
 
       - name: 운영서버 디렉토리 정리
@@ -45,18 +45,25 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: sudo rm -rf /tmp/withaeng
 
-      - name: 배포 관련 파일 전송
+      - name: Dockerfile 전송
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: |
-            withaeng-api/Dockerfile
-            withaeng-api/docker-compose.yml
+          source: withaeng-api/Dockerfile
           target: /tmp/withaeng
 
-      - name: 빌드 파일 전송
+      - name: docker-compose.yml 전송
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: withaeng-api/docker-compose.yml
+          target: /tmp/withaeng
+
+      - name: Jar 전송
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
