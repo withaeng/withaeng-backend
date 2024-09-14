@@ -76,5 +76,6 @@ jobs:
             JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
             JASYPT_PASSWORD=${{ secrets.JASYPT_PASSWORD }}
           script: |
+            echo $SPRING_PROFILES_ACTIVE
             sudo docker compose -f /tmp/withaeng-api/docker-compose.yml down
             sudo -E docker compose -f /tmp/withaeng-api/docker-compose.yml up -d
