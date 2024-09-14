@@ -1,3 +1,6 @@
+spring:
+  thymeleaf:
+    cache: false
 cloud:
   aws:
     credentials: # TODO environment variable로 변경
@@ -7,16 +10,3 @@ cloud:
       static: ENC(1OX/+Td6WwTc/zbC8t/DVgDHX24lMOV+ZQbza/IstkTM8E3UKwloe8EaH97FKpzT)
     ses:
       from: ENC(S6WIEUO3m5JKHw7PrhpgkAvQjd1LzwwLRXEu2I9yUtzErtBEDk6EEt28Ltzypo8/fZi7Ua8VkHjWh9498FT5DA==)
-
----
-spring.config.activate.on-profile: local
-
-spring:
-  thymeleaf:
-    cache: false
-
----
-spring.config.activate.on-profile: dev
-
----
-spring.config.activate.on-profile: prod
