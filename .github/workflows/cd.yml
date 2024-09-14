@@ -2,14 +2,22 @@ name: Withaeng CD with Gradle, Github Actions
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "develop" ] # todo: main branch로 변경
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: prod
+
     steps:
       - name: 체크아웃
         uses: actions/checkout@v3
+
+      - name: JDK 17 설치
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
 
       - name: Gradle 캐싱
         uses: actions/cache@v3
@@ -21,13 +29,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: JDK 17 설치
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: adopt
-
-      - name: 빌드 권한 부여
+      - name: gradlew 실행 권한 부여
         run: chmod +x ./gradlew
         shell: bash
 
@@ -35,23 +37,54 @@ jobs:
         run: ./gradlew clean build
         shell: bash
 
-      - name: Jar 파일 생성
-        run: ./gradlew bootJar
-
-      - name: API 빌드 파일 복사
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_KEY }}
-          source: "withaeng-api/build/libs/*.jar"
-          target: "/home/ubuntu/remote"
-
-      - name: API EC2 인스턴스 접속 및 애플리케이션 실행
+      - name: 운영서버 디렉토리 정리
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_KEY }}
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_KEY }}
+          script: sudo rm -rf /tmp/withaeng
+
+      - name: 배포 관련 파일 전송
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_KEY }}
+          source: |
+            withaeng-api/Dockerfile
+            withaeng-api/docker-compose.yml
+          target: /tmp/withaeng
+
+      - name: 빌드 파일 전송
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_KEY }}
+          source: withaeng-api/build/libs/*.jar
+          target: /tmp/withaeng/build/libs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+      - name: 운영서버 애플리케이션 실행
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          envs:
+            SPRING_PROFILES_ACTIVE=prod
+            DATABASE_DRIVER=${{ secrets.DATABASE_DRIVER }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
+            DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+            JWT_ISSUER=${{ secrets.JWT_ISSUER }}
+            JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+            JASYPT_PASSWORD=${{ secrets.JASYPT_PASSWORD }}
           script: |
-            sudo /home/ubuntu/remote/deploy.sh
+            sudo docker compose -f /tmp/withaeng/docker-compose.yml up -d

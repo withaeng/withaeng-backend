@@ -1,3 +1,6 @@
+*-local.properties
+*-local.yaml
+*-local.yml
 HELP.md
 .gradle
 build/

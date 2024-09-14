@@ -1,12 +1,21 @@
 spring:
-  profiles:
-    default: dev
-  config:
-    import:
-      - classpath:/application-domain.yml
-      - classpath:/application-external.yml
+  application.name: withaeng-api
+  profiles.default: local
+  config.import:
+    - application-domain.yml
+    - application-external.yml
+  web.resources.add-mappings: false
 
-# Swagger docs
+witheang:
+  auth:
+    jwt-issuer: ${JWT_ISSUER}
+    jwt-secret-key: ${JWT_SECRET_KEY}
+
+jasypt.encryptor.password: ${JASYPT_PASSWORD}
+
+---
+spring.config.activate.on-profile: local
+
 springdoc:
   swagger-ui:
     path: /api-docs
@@ -15,7 +24,22 @@ springdoc:
     groups:
       enabled: true
 
-witheang:
-  auth:
-    jwt-secret-key: ENC(1t2RYsNu8JCGgZjC5HuE9t9690mWUiygMhKfUQIn3ZpVlSYI0WvRPnQswh3Uti3gBoDqJ4Zk3moN6wWswWQC7g+IFiEDUvqjTLzhfJrl9A0TIW0MOY0kd+vnVu0sernJ)
-    jwt-issuer: https://github.com/withaeng/withaeng-backend
+---
+spring.config.activate.on-profile: dev
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
+    operations-sorter: alpha
+  api-docs:
+    groups:
+      enabled: true
+
+---
+spring.config.activate.on-profile: prod
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false

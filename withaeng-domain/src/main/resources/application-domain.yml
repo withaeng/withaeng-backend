@@ -1,16 +1,56 @@
 spring:
-  profiles:
-    default: dev
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ENC(hrN+eQ4p84E3NW0vTIIRfhlAvKoNxPvYFvCAN2O9CyD7UZpSDS2dI9fEsBaHp6gftj+l4UOIBo5BHRIo2BQiC403lDFKj8I5ySiIxdvhY0Pp7fheX5J9DvJD5elcnAthagf+7EFdQVuQ0xdSODL7LceQs5DCSwESYThyL9HLPVM=)
-    username: ENC(FTbbdqVBbcTrUysSwbf/BwFbE0HhgdyXT+Z0uC0xZfLyuftv/9ceA4wQdOp70vMT)
-    password: ENC(7+z+f1IVvS1HcBCtH8hYpUMbEM6mcHVBw93co3jNIhp8EuXicXkee/MlqY1DkJq2)
+    hikari:
+      data-source-properties:
+        rewriteBatchedStatements: true
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate.default_batch_fetch_size: 100
+
+---
+spring.config.activate.on-profile: local
+
+spring:
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:withaeng;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
   jpa:
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
-        show_sql: false
-        format_sql: false
-        use_sql_comments: false
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+---
+spring.config.activate.on-profile: dev
+
+spring:
+  datasource:
+    driverClassName: ${DATABASE_DRIVER}
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+---
+spring.config.activate.on-profile: prod
+
+spring:
+  datasource:
+    driverClassName: ${DATABASE_DRIVER}
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none

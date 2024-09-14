@@ -1,17 +1,22 @@
-spring:
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    mode: HTML
-    encoding: UTF-8
-    content-type: text/html
-    cache: false
 cloud:
   aws:
-    credentials:
+    credentials: # TODO environment variable로 변경
       access-key: ENC(tje4pV1gRGOh5N5ig8TND1sc3NyDGe9KDIXHMiY5UgBospTEAk2pjcxphPMvoOiNshPej16XCkj/RDP8ywREdQ==)
       secret-key: ENC(5RTBAVDrwVdRLBQ/vrQrrE2f9K/68acjDiHgg9hc9J/8K3TZoejmca7Nagyz1exQ8XEndRKXl4XgxyXljZvykgP/56Ab7eAKuXXplny0zoQ=)
     region:
       static: ENC(1OX/+Td6WwTc/zbC8t/DVgDHX24lMOV+ZQbza/IstkTM8E3UKwloe8EaH97FKpzT)
     ses:
       from: ENC(S6WIEUO3m5JKHw7PrhpgkAvQjd1LzwwLRXEu2I9yUtzErtBEDk6EEt28Ltzypo8/fZi7Ua8VkHjWh9498FT5DA==)
+
+---
+spring.config.activate.on-profile: local
+
+spring:
+  thymeleaf:
+    cache: false
+
+---
+spring.config.activate.on-profile: dev
+
+---
+spring.config.activate.on-profile: prod
